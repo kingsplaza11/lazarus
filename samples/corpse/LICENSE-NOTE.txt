@@ -1,0 +1,1 @@
+TaskFreak! 0.6.4 by Stan Ozier, licensed under the GNU GPL as stated on its SourceForge page. Included unmodified as demo input for Lazarus; not part of the Lazarus source.
