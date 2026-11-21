@@ -1,0 +1,37 @@
+{% extends "web/base.html" %}
+{% block title %}Lazarus · {{ corpse.name }}{% endblock %}
+{% block content %}
+<section class="panel">
+  <a class="back" href="{% url 'web:home' %}">&larr; Back to the graveyard</a>
+  <h1>{{ corpse.name }}</h1>
+  <p class="meta">
+    <span class="status status-{{ corpse.status }}">{{ corpse.get_status_display }}</span>
+    · {{ corpse.file_count }} file{{ corpse.file_count|pluralize }}
+    {% if corpse.source_url %}· <a href="{{ corpse.source_url }}" rel="noopener" target="_blank">source</a>{% endif %}
+    · {{ corpse.created_at|date:"M j, Y" }}
+  </p>
+
+  {% if corpse.error %}
+  <div class="alert alert-error"><p>{{ corpse.error }}</p></div>
+  {% endif %}
+
+  {% if corpse.status == "done" and not has_php %}
+  <div class="alert alert-warning"><p>No PHP files found. Lazarus currently resurrects PHP apps only.</p></div>
+  {% endif %}
+
+  {% if languages %}
+  <ul class="languages" aria-label="Files per language">
+    {% for language, count in languages.items %}<li class="badge">{{ language }} <strong>{{ count }}</strong></li>{% endfor %}
+  </ul>
+  {% endif %}
+
+  <button class="btn btn-primary" type="button" disabled title="Coming in the autopsy stage">Begin autopsy</button>
+</section>
+
+{% if corpse.file_tree.children %}
+<section class="panel">
+  <h2>Remains</h2>
+  {% include "intake/_tree.html" with node=corpse.file_tree %}
+</section>
+{% endif %}
+{% endblock %}

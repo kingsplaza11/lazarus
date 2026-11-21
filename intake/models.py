@@ -13,6 +13,11 @@ class Corpse(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
+    file_tree = models.JSONField(default=dict, blank=True)
+    languages = models.JSONField(default=dict, blank=True)
+    is_demo = models.BooleanField(default=False)
+    error = models.TextField(blank=True)
+
     class Meta:
         ordering = ["-created_at"]
 

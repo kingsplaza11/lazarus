@@ -40,3 +40,65 @@ button:disabled, .button[disabled] {
   border: 1px solid var(--muted);
   cursor: not-allowed;
 }
+/* ---- Intake: graveyard, upload, corpse detail (append to lazarus.css) ---- */
+[x-cloak] { display: none !important; }
+
+.hero { text-align: center; padding: 3rem 1rem 2rem; }
+.hero h1 { font-size: 3rem; margin: 0; letter-spacing: 0.04em; }
+.tagline { color: #7ee787; font-style: italic; margin: 0.25rem 0 1rem; }
+.lead { color: #b8b3a8; max-width: 40rem; margin: 0 auto 1.5rem; }
+.actions { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+.inline-form { display: inline; margin: 0; }
+
+.btn { display: inline-block; padding: 0.6rem 1.1rem; border-radius: 8px; border: 1px solid #3a3a3a;
+       background: #1c1c1c; color: #ece8df; text-decoration: none; cursor: pointer; font: inherit; }
+.btn:hover:not([disabled]) { border-color: #7ee787; }
+.btn-primary { background: #7ee787; color: #0d0d0d; border-color: #7ee787; font-weight: 600; }
+.btn[disabled] { opacity: 0.45; cursor: not-allowed; }
+
+.graveyard { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 1.25rem;
+             padding: 1rem; max-width: 1100px; margin: 0 auto; }
+.tombstone { display: block; padding: 1.5rem 1rem 1rem; text-align: center; text-decoration: none; color: #ece8df;
+             background: linear-gradient(#2a2a2a, #1a1a1a); border: 1px solid #3a3a3a;
+             border-radius: 90px 90px 8px 8px; transition: transform 0.15s, border-color 0.15s; }
+.tombstone:hover { transform: translateY(-3px); border-color: #7ee787; }
+.tombstone h2 { font-size: 1.05rem; margin: 0.5rem 0; word-break: break-word; }
+.tombstone p, .tombstone time { margin: 0.2rem 0; color: #b8b3a8; font-size: 0.9rem; }
+.rip { font-size: 0.75rem; letter-spacing: 0.2em; color: #8a857b; }
+.status-done .status, .status.status-done { color: #7ee787; }
+.status-failed .status, .status.status-failed { color: #ff7b72; }
+.status-running .status, .status.status-running { color: #e3b341; }
+.empty { grid-column: 1 / -1; text-align: center; color: #8a857b; padding: 2rem; }
+
+.panel { max-width: 900px; margin: 1.5rem auto; padding: 1.5rem; background: #161616;
+         border: 1px solid #2c2c2c; border-radius: 12px; }
+.back { color: #8a857b; text-decoration: none; font-size: 0.9rem; }
+.meta { color: #b8b3a8; }
+label { display: block; margin: 1rem 0 0.35rem; color: #b8b3a8; }
+input[type="text"], input[type="file"], input:not([type]) { width: 100%; padding: 0.55rem; border-radius: 8px;
+         border: 1px solid #3a3a3a; background: #0f0f0f; color: #ece8df; box-sizing: border-box; }
+.tabs { display: flex; gap: 0.5rem; margin-top: 1rem; }
+.tabs button { background: none; border: 1px solid #3a3a3a; color: #b8b3a8; padding: 0.4rem 0.8rem;
+               border-radius: 8px; cursor: pointer; }
+.tabs button.active { border-color: #7ee787; color: #ece8df; }
+form .btn-primary { margin-top: 1.25rem; }
+
+.alert { padding: 0.75rem 1rem; border-radius: 8px; margin: 1rem 0; }
+.alert p { margin: 0; }
+.alert-error { background: #2d1416; border: 1px solid #ff7b72; }
+.alert-warning { background: #2b2410; border: 1px solid #e3b341; }
+.field-error { color: #ff7b72; margin: 0.3rem 0 0; font-size: 0.9rem; }
+.messages { list-style: none; max-width: 900px; margin: 0 auto; padding: 0 1rem; }
+.message-error { color: #ff7b72; }
+
+.languages { list-style: none; padding: 0; display: flex; gap: 0.5rem; flex-wrap: wrap; margin: 1rem 0; }
+.badge { background: #222; border: 1px solid #333; border-radius: 999px; padding: 0.2rem 0.7rem; font-size: 0.85rem; }
+
+.tree { list-style: none; padding-left: 1.1rem; margin: 0.25rem 0; font-family: ui-monospace, Menlo, monospace;
+        font-size: 0.88rem; }
+.panel > .tree { padding-left: 0; }
+.tree summary { cursor: pointer; color: #ece8df; }
+.tree .file { color: #b8b3a8; }
+.tree .lang-php { color: #a5b4fc; }
+.tree .lang-sql { color: #7ee787; }
+.tree .size { color: #5f5b54; font-size: 0.78rem; margin-left: 0.4rem; }

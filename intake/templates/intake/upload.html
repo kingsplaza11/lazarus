@@ -1,0 +1,43 @@
+{% extends "web/base.html" %}
+{% block title %}Lazarus · Upload a corpse{% endblock %}
+{% block content %}
+<section class="panel">
+  <a class="back" href="{% url 'web:home' %}">&larr; Back to the graveyard</a>
+  <h1>Upload a corpse</h1>
+  <p class="lead">A legacy PHP app as a zip file, or a public GitHub repository. Lazarus never runs uploaded code.</p>
+
+  {% if form.non_field_errors %}
+  <div class="alert alert-error">{% for error in form.non_field_errors %}<p>{{ error }}</p>{% endfor %}</div>
+  {% endif %}
+
+  <form method="post" enctype="multipart/form-data"
+        x-data="{ tab: '{% if form.github_url.value %}github{% else %}zip{% endif %}' }">
+    {% csrf_token %}
+
+    <label for="{{ form.name.id_for_label }}">{{ form.name.label }}</label>
+    {{ form.name }}
+    {% for error in form.name.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+
+    <div class="tabs" role="tablist">
+      <button type="button" role="tab" :class="{ active: tab === 'zip' }" @click="tab = 'zip'">Zip file</button>
+      <button type="button" role="tab" :class="{ active: tab === 'github' }" @click="tab = 'github'">GitHub URL</button>
+    </div>
+
+    <div x-show="tab === 'zip'">
+      <label for="{{ form.archive.id_for_label }}">{{ form.archive.label }} (max 20 MB)</label>
+      <input type="file" name="archive" id="{{ form.archive.id_for_label }}" accept=".zip" :disabled="tab !== 'zip'">
+      {% for error in form.archive.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+
+    <div x-show="tab === 'github'" x-cloak>
+      <label for="{{ form.github_url.id_for_label }}">{{ form.github_url.label }}</label>
+      <input type="text" name="github_url" id="{{ form.github_url.id_for_label }}"
+             value="{{ form.github_url.value|default_if_none:'' }}"
+             placeholder="https://github.com/owner/repo" :disabled="tab !== 'github'">
+      {% for error in form.github_url.errors %}<p class="field-error">{{ error }}</p>{% endfor %}
+    </div>
+
+    <button class="btn btn-primary" type="submit">Bring it in</button>
+  </form>
+</section>
+{% endblock %}

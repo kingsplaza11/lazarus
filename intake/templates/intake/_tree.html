@@ -1,0 +1,15 @@
+<ul class="tree">
+  {% for child in node.children %}
+  <li>
+    {% if child.type == "dir" %}
+    <details>
+      <summary class="folder">{{ child.name }}/</summary>
+      {% include "intake/_tree.html" with node=child %}
+    </details>
+    {% else %}
+    <span class="file lang-{{ child.language|slugify }}">{{ child.name }}</span>
+    <span class="size">{{ child.size|filesizeformat }}</span>
+    {% endif %}
+  </li>
+  {% endfor %}
+</ul>

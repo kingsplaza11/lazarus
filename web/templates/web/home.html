@@ -1,8 +1,36 @@
 {% extends "web/base.html" %}
-{% block title %}Lazarus{% endblock %}
+{% block title %}Lazarus · The Graveyard{% endblock %}
 {% block content %}
-<h1>Lazarus</h1>
-<p class="tagline">Dead code walks again.</p>
-<p>Lazarus resurrects abandoned legacy code into a modern, working application.</p>
-<button type="button" disabled>Upload a corpse</button>
+<section class="hero">
+  <h1>Lazarus</h1>
+  <p class="tagline">Dead code walks again.</p>
+  <p class="lead">Upload a legacy PHP app. Lazarus performs the autopsy, writes the spec, and brings it back to life.</p>
+  <div class="actions">
+    <a class="btn btn-primary" href="{% url 'intake:upload' %}">Upload a corpse</a>
+    <form method="post" action="{% url 'intake:demo' %}" class="inline-form">
+      {% csrf_token %}
+      <button class="btn" type="submit">Summon the demo corpse</button>
+    </form>
+  </div>
+</section>
+
+{% if messages %}
+<ul class="messages">
+  {% for message in messages %}<li class="message message-{{ message.tags }}">{{ message }}</li>{% endfor %}
+</ul>
+{% endif %}
+
+<section class="graveyard" aria-label="Corpses">
+  {% for corpse in corpses %}
+  <a class="tombstone status-{{ corpse.status }}" href="{% url 'intake:detail' corpse.pk %}">
+    <span class="rip">R.I.P.</span>
+    <h2>{{ corpse.name }}</h2>
+    <p>{{ corpse.file_count }} file{{ corpse.file_count|pluralize }}</p>
+    <p class="status">{{ corpse.get_status_display }}</p>
+    <time datetime="{{ corpse.created_at|date:'c' }}">{{ corpse.created_at|date:"M j, Y" }}</time>
+  </a>
+  {% empty %}
+  <p class="empty">The graveyard is empty. Summon the demo corpse or upload your own.</p>
+  {% endfor %}
+</section>
 {% endblock %}
