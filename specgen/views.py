@@ -28,7 +28,9 @@ def detail(request, pk: int):
         return redirect("intake:detail", pk=corpse.pk)
     files = spec_files(spec)
     total, invalid = validate_ears(requirements_text(files))
-    ordered = sorted(files.items(), key=lambda item: (not item[0].startswith("specs/"), item[0]))
+    order = {"requirements.md": 0, "design.md": 1, "tasks.md": 2}
+    ordered = sorted(files.items(), key=lambda item: (
+        not item[0].startswith("specs/"), order.get(item[0].rsplit("/", 1)[-1], 9), item[0]))
     return render(request, "specgen/detail.html", {
         "corpse": corpse,
         "spec": spec,
