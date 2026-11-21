@@ -118,6 +118,9 @@ def build_report(root: Path) -> dict:
         is_root = "/" not in rel
         if not (is_root or analysis["superglobals"] or analysis["forms"] or analysis["redirects"]):
             continue
+        # Outside the root, a file that defines classes or functions is a library, not a screen.
+        if not is_root and (analysis["classes"] or analysis["functions"]):
+            continue
         reach = [rel] + _reachable(rel, graph)
         reads: dict[str, list[str]] = {}
         forms, page_tables, redirects, session = [], set(), [], False
@@ -161,10 +164,10 @@ def build_report(root: Path) -> dict:
     cause = None
     if dead:
         total = sum(dead.values())
-        versions = sorted({reasons[name] for name in dead})
+        versions = sorted({reasons[name].replace("removed in PHP ", "") for name in dead})
         cause = (
             f"{total} call{'s' if total != 1 else ''} to {len(dead)} function{'s' if len(dead) != 1 else ''} "
-            f"{' and '.join(versions)}, in {len(dead_files)} file{'s' if len(dead_files) != 1 else ''}."
+            f"removed in PHP {' and '.join(versions)}, in {len(dead_files)} file{'s' if len(dead_files) != 1 else ''}."
         )
 
     files = [

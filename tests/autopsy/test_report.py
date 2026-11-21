@@ -80,6 +80,20 @@ def test_report_is_deterministic(corpse):
     assert build_report(corpse) == build_report(corpse)
 
 
+def test_library_files_outside_root_are_not_pages(tmp_path):
+    write(tmp_path, "index.php", "<?php echo 1;")
+    write(tmp_path, "include/classes/doc.php", "<?php class Doc { function up() { return $_FILES['f']; } }")
+    write(tmp_path, "admin/settings.php", "<?php if ($_POST['save']) { header('Location: ../index.php'); }")
+    pages = [p["path"] for p in build_report(tmp_path)["pages"]]
+    assert pages == ["admin/settings.php", "index.php"]
+
+
+def test_cause_of_death_wording(tmp_path):
+    write(tmp_path, "a.php", "<?php mysql_query('x'); $f = create_function('', '');")
+    summary = build_report(tmp_path)["cause_of_death"]["summary"]
+    assert summary == "2 calls to 2 functions removed in PHP 7.0 and 8.0, in 1 file."
+
+
 def test_resolve_include():
     known = {"index.php", "include/html/header.php", "include/classes/tzn_mysql.php"}
     assert resolve_include("?html/header.php", "index.php", known) == "include/html/header.php"
