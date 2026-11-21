@@ -90,6 +90,7 @@
 <section class="panel">
   <h2>Notes</h2>
   <ul>
+    {% if report.libraries %}<li>Bundled third-party libraries: {% for lib in report.libraries %}<code>{{ lib.name }}</code> <small class="muted">({{ lib.reason }})</small>{% if not forloop.last %}, {% endif %}{% endfor %}. Replace these with modern equivalents; they are not part of the app's own pages.</li>{% endif %}
     {% if report.i18n %}<li>Translations: {{ report.i18n.languages|length }} languages in <code>{{ report.i18n.path }}</code>. Analysed <code>{{ report.i18n.kept }}</code> only; skipped {{ report.summary.skipped_translation_files }} files.</li>{% endif %}
     <li>{{ report.summary.classes }} classes and {{ report.summary.functions }} functions defined.</li>
     <li>{{ report.summary.unresolved_includes }} include{{ report.summary.unresolved_includes|pluralize }} couldn't be resolved to a file (dynamic paths).</li>

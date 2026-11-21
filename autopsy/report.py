@@ -12,6 +12,33 @@ from .parsers.php import parse_php
 from .parsers.sql import match_table, parse_schema
 
 I18N_DIR_NAMES = {"language", "languages", "lang", "locale", "locales", "i18n"}
+# Only a licence file marks bundled third-party code; apps' own folders often have READMEs or changelogs.
+LIBRARY_MARKERS = ("license", "licence", "copying")
+KNOWN_LIBRARIES = {
+    "jscalendar", "xajax", "tinymce", "tiny_mce", "fckeditor", "ckeditor", "jquery", "phpmailer",
+    "smarty", "adodb", "pear", "prototype", "scriptaculous", "mootools", "yui", "extjs", "dojo",
+    "phplot", "fpdf", "tcpdf", "pclzip", "simplepie", "magpierss", "htmlpurifier", "swiftmailer",
+}
+
+
+def find_libraries(root: Path) -> list[dict]:
+    """Find bundled third-party libraries: subfolders with their own README/LICENSE, or well-known names.
+
+    Only the top-most such folder is reported (a library's own sub-folders are part of it).
+    """
+    found: list[dict] = []
+    for folder in sorted(p for p in root.rglob("*") if p.is_dir()):
+        rel = folder.relative_to(root).as_posix()
+        if any(rel.startswith(lib["path"] + "/") for lib in found):
+            continue
+        name = folder.name.lower()
+        if name in KNOWN_LIBRARIES:
+            found.append({"path": rel, "name": folder.name, "reason": "well-known library"})
+            continue
+        markers = [f.name for f in folder.iterdir() if f.is_file() and f.name.lower().startswith(LIBRARY_MARKERS)]
+        if markers:
+            found.append({"path": rel, "name": folder.name, "reason": f"ships its own {markers[0]}"})
+    return found
 PREFERRED_LANGUAGES = ("en", "english", "en_us", "en-us")
 REPORT_VERSION = 1
 
@@ -66,6 +93,11 @@ def build_report(root: Path) -> dict:
     """Analyse every PHP file under `root` and return the autopsy report (JSON-serialisable)."""
     root = Path(root)
     i18n = find_i18n(root)
+    libraries = [
+        lib for lib in find_libraries(root)
+        if not (i18n and (lib["path"] == i18n["path"] or lib["path"].startswith(i18n["path"] + "/")))
+    ]
+    library_prefixes = tuple(lib["path"] + "/" for lib in libraries)
     skipped_translations = 0
 
     analyses: dict[str, dict] = {}
@@ -120,6 +152,9 @@ def build_report(root: Path) -> dict:
             continue
         # Outside the root, a file that defines classes or functions is a library, not a screen.
         if not is_root and (analysis["classes"] or analysis["functions"]):
+            continue
+        # Files inside bundled third-party libraries are never the app's own pages.
+        if rel.startswith(library_prefixes):
             continue
         reach = [rel] + _reachable(rel, graph)
         reads: dict[str, list[str]] = {}
@@ -202,7 +237,9 @@ def build_report(root: Path) -> dict:
             "unresolved_includes": unresolved,
             "files_with_errors": sum(1 for a in analyses.values() if a["has_errors"]),
             "skipped_translation_files": skipped_translations,
+            "libraries": len(libraries),
         },
+        "libraries": libraries,
         "cause_of_death": {
             "summary": cause,
             "functions": [{"name": n, "count": c, "why": reasons[n]} for n, c in dead.most_common()],

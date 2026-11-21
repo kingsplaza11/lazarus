@@ -2,7 +2,7 @@ from pathlib import Path
 
 import pytest
 
-from autopsy.report import build_report, find_i18n, resolve_include
+from autopsy.report import build_report, find_i18n, find_libraries, resolve_include
 
 
 def write(root: Path, rel: str, content: str) -> None:
@@ -86,6 +86,43 @@ def test_library_files_outside_root_are_not_pages(tmp_path):
     write(tmp_path, "admin/settings.php", "<?php if ($_POST['save']) { header('Location: ../index.php'); }")
     pages = [p["path"] for p in build_report(tmp_path)["pages"]]
     assert pages == ["admin/settings.php", "index.php"]
+
+
+def test_bundled_libraries_are_detected_and_not_pages(tmp_path):
+    write(tmp_path, "index.php", "<?php echo 1;")
+    write(tmp_path, "jscalendar/calendar-setup.php", "<?php echo $_GET['lang'];")
+    write(tmp_path, "widgets/editor/LICENSE.txt", "MIT")
+    write(tmp_path, "widgets/editor/run.php", "<?php echo $_POST['text'];")
+    write(tmp_path, "widgets/editor/sub/x.php", "<?php echo $_GET['y'];")
+    report = build_report(tmp_path)
+    assert [p["path"] for p in report["pages"]] == ["index.php"]
+    assert [lib["path"] for lib in report["libraries"]] == ["jscalendar", "widgets/editor"]
+    assert report["summary"]["libraries"] == 2
+
+
+def test_readme_or_changelog_alone_is_not_a_library(tmp_path):
+    write(tmp_path, "index.php", "<?php echo 1;")
+    write(tmp_path, "install/CHANGES.txt", "v0.6.4")
+    write(tmp_path, "install/index.php", "<?php if ($_POST['go']) { header('Location: ../index.php'); }")
+    write(tmp_path, "docs/README", "notes")
+    report = build_report(tmp_path)
+    assert report["libraries"] == []
+    assert "install/index.php" in [p["path"] for p in report["pages"]]
+
+
+def test_translation_folders_are_never_libraries(tmp_path):
+    write(tmp_path, "index.php", "<?php echo 1;")
+    write(tmp_path, "include/language/en/common.php", "<?php $l = 1;")
+    write(tmp_path, "include/language/sv/common.php", "<?php $l = 1;")
+    write(tmp_path, "include/language/sv/LICENSE", "GPL")
+    assert build_report(tmp_path)["libraries"] == []
+
+
+def test_find_libraries_reports_top_most_only(tmp_path):
+    write(tmp_path, "xajax/README", "xajax")
+    write(tmp_path, "xajax/plugins/README", "plugin")
+    write(tmp_path, "app/views/page.php", "<?php")
+    assert [lib["path"] for lib in find_libraries(tmp_path)] == ["xajax"]
 
 
 def test_cause_of_death_wording(tmp_path):
