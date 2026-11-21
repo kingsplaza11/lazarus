@@ -37,6 +37,8 @@ def demo(request):
 
 
 def detail(request, pk: int):
+    from autopsy.models import Autopsy  # local import keeps intake usable on its own
+
     corpse = get_object_or_404(Corpse, pk=pk)
     languages = corpse.languages or {}
     return render(
@@ -46,5 +48,6 @@ def detail(request, pk: int):
             "corpse": corpse,
             "languages": languages,
             "has_php": languages.get("PHP", 0) > 0,
+            "autopsy": Autopsy.objects.filter(corpse=corpse).first(),
         },
     )

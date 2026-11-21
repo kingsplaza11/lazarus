@@ -6,4 +6,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('web.urls')),
     path("corpses/", include("intake.urls")),
+    path("corpses/", include("autopsy.urls")),
 ]

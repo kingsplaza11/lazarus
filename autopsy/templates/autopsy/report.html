@@ -1,0 +1,99 @@
+{% extends "web/base.html" %}
+{% block title %}Lazarus · Autopsy of {{ corpse.name }}{% endblock %}
+{% block content %}
+<section class="panel">
+  <a class="back" href="{% url 'intake:detail' corpse.pk %}">&larr; Back to {{ corpse.name }}</a>
+  <h1>Autopsy: {{ corpse.name }}</h1>
+  <p class="meta">Performed {{ autopsy.updated_at|date:"M j, Y H:i" }}</p>
+
+  <div class="vitals">
+    <div><strong>{{ report.summary.php_files }}</strong><span>PHP files</span></div>
+    <div><strong>{{ report.summary.lines_of_code }}</strong><span>lines</span></div>
+    <div><strong>{{ report.summary.pages }}</strong><span>pages</span></div>
+    <div><strong>{{ report.summary.forms }}</strong><span>forms</span></div>
+    <div><strong>{{ report.summary.tables }}</strong><span>tables</span></div>
+    <div><strong>{{ report.summary.sql_statements }}</strong><span>SQL statements</span></div>
+  </div>
+
+  <form method="post" action="{% url 'autopsy:run' corpse.pk %}" class="inline-form">
+    {% csrf_token %}
+    <button class="btn" type="submit">Re-run autopsy</button>
+  </form>
+  <button class="btn btn-primary" type="button" disabled title="Coming in the spec generator stage">Write the spec</button>
+</section>
+
+<section class="panel">
+  <h2>Cause of death</h2>
+  {% if report.cause_of_death.summary %}
+  <p class="cause">{{ report.cause_of_death.summary }}</p>
+  <table class="data">
+    <thead><tr><th>Function</th><th>Calls</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for fn in report.cause_of_death.functions %}
+      <tr><td><code>{{ fn.name }}()</code></td><td>{{ fn.count }}</td><td>{{ fn.why }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+  <p>No calls to removed PHP functions were found. This code may still run on modern PHP.</p>
+  {% endif %}
+</section>
+
+<section class="panel">
+  <h2>Pages ({{ report.pages|length }})</h2>
+  <table class="data">
+    <thead><tr><th>Page</th><th>Reads</th><th>Forms</th><th>Tables</th><th>Session</th></tr></thead>
+    <tbody>
+      {% for page in report.pages %}
+      <tr>
+        <td><code>{{ page.path }}</code></td>
+        <td>{% for kind, keys in page.reads.items %}<span class="tag">{{ kind }}</span> {{ keys|join:", " }}<br>{% empty %}<span class="muted">none</span>{% endfor %}</td>
+        <td>{{ page.forms|length }}</td>
+        <td>{{ page.tables|join:", "|default:"—" }}</td>
+        <td>{% if page.uses_session %}yes{% else %}<span class="muted">no</span>{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+
+<section class="panel">
+  <h2>Database ({{ report.tables|length }} tables)</h2>
+  {% for table in report.tables %}
+  <details class="table-card">
+    <summary><code>{{ table.name }}</code> · {{ table.columns|length }} columns{% if table.verbs %} · {{ table.verbs|join:", " }}{% endif %}</summary>
+    <table class="data">
+      <thead><tr><th>Column</th><th>Type</th></tr></thead>
+      <tbody>
+        {% for column in table.columns %}
+        <tr><td><code>{{ column.name }}</code>{% if column.name in table.primary_key %} <span class="tag">PK</span>{% endif %}</td><td>{{ column.type }}</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% if table.used_in %}<p class="muted">Used in: {{ table.used_in|join:", " }}</p>{% endif %}
+  </details>
+  {% empty %}
+  <p class="muted">No CREATE TABLE statements were found in .sql files.</p>
+  {% endfor %}
+</section>
+
+<section class="panel">
+  <h2>Forms</h2>
+  {% for page in report.pages %}{% for form in page.forms %}
+  <div class="form-card">
+    <p><code>{{ form.file }}:{{ form.line }}</code> · <span class="tag">{{ form.method }}</span> → <code>{{ form.action|default:"(same page)" }}</code></p>
+    <p class="muted">{% for field in form.fields %}{{ field.name }} <small>({{ field.type }})</small>{% if not forloop.last %}, {% endif %}{% empty %}no named fields{% endfor %}</p>
+  </div>
+  {% endfor %}{% endfor %}
+</section>
+
+<section class="panel">
+  <h2>Notes</h2>
+  <ul>
+    {% if report.i18n %}<li>Translations: {{ report.i18n.languages|length }} languages in <code>{{ report.i18n.path }}</code>. Analysed <code>{{ report.i18n.kept }}</code> only; skipped {{ report.summary.skipped_translation_files }} files.</li>{% endif %}
+    <li>{{ report.summary.classes }} classes and {{ report.summary.functions }} functions defined.</li>
+    <li>{{ report.summary.unresolved_includes }} include{{ report.summary.unresolved_includes|pluralize }} couldn't be resolved to a file (dynamic paths).</li>
+    <li>{{ report.summary.files_with_errors }} file{{ report.summary.files_with_errors|pluralize }} had syntax the parser couldn't fully read.</li>
+  </ul>
+</section>
+{% endblock %}
