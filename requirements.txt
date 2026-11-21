@@ -1,0 +1,12 @@
+# Runtime
+Django>=5.2,<6
+django-q2
+python-dotenv
+gunicorn
+whitenoise
+
+# Test
+pytest
+pytest-django
+pytest-env
+hypothesis

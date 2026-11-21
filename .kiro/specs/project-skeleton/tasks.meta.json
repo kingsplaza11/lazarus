@@ -1,0 +1,433 @@
+{
+  "pbtResults": {},
+  "executionHistory": {
+    "1. Create the Django project and apps": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896398
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211907119
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212012238
+      }
+    ],
+    "2.1 Load `.env` with python-dotenv; read `DJANGO_SECRET_KEY`, `DEBUG`, `ALLOWED_HOSTS`, `GROQ_API_KEY`, `GEMINI_API_KEY`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896452
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212017108
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212072064
+      }
+    ],
+    "2.2 Production security settings when `DEBUG` is false": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896560
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212077312
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212116697
+      }
+    ],
+    "2.3 Update `.env.example` with every variable": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896601
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212119748
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212154593
+      }
+    ],
+    "3. Shared status choices": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896633
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212157854
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212217193
+      }
+    ],
+    "4.1 `Corpse` in `intake/models.py`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896662
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212223121
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212359396
+      }
+    ],
+    "4.2 `Autopsy` in `autopsy/models.py`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896726
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212364084
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212408471
+      }
+    ],
+    "4.3 `Spec` in `specgen/models.py`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896755
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212418957
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212481685
+      }
+    ],
+    "4.4 `Job` in `parity/models.py` with `append_log`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896785
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212489440
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212560158
+      }
+    ],
+    "4.5 Register all four in admin with `list_display` including `status`; run `makemigrations` and `migrate`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896819
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212563388
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212654354
+      }
+    ],
+    "5.1 Configure `Q_CLUSTER` with the ORM broker": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896846
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212658417
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212694902
+      }
+    ],
+    "5.2 Implement `run_job` in `parity/jobs.py` (running → done, or failed + traceback in log)": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896876
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212699003
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212756802
+      }
+    ],
+    "6.1 `base.html` with HTMX + Alpine.js from CDN and `lazarus.css`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896902
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212763609
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212809264
+      }
+    ],
+    "6.2 `home.html` graveyard placeholder and `home` view at `/`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896967
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212814377
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212977112
+      }
+    ],
+    "6.3 `health` view at `/health/` returning `{\"status\": \"ok\"}`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211896994
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212991140
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213258320
+      }
+    ],
+    "7.1 `pytest.ini` and pytest-django setup that works without `.env`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211897023
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213262250
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213561446
+      }
+    ],
+    "7.2 View tests for `/` and `/health/`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211897050
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213571204
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213619745
+      }
+    ],
+    "7.3 Model `__str__` and relation tests; `run_job` success and failure tests": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211897079
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213625045
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213705766
+      }
+    ],
+    "7.4 Hypothesis property test: unknown status values fail validation": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211897110
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213714623
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213778041
+      }
+    ],
+    "8.1 Add `gunicorn` and `whitenoise` to `requirements.txt`; WhiteNoise middleware and static settings": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211897151
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213783885
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213848872
+      }
+    ],
+    "8.2 Create `build.sh` (executable) and `render.yaml`": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211897187
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213861316
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213900666
+      }
+    ],
+    "8.3 Write `README.md`: what Lazarus is, local setup, running tests, deploying to Render, the TaskFreak corpse credit": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211897233
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213904260
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213960555
+      }
+    ],
+    "9. Verify and deploy": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795211897262
+      },
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213966093
+      }
+    ],
+    "2. Environment-based settings": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212154659
+      }
+    ],
+    "4. Core models and admin": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212654431
+      }
+    ],
+    "5. Background jobs": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795212756867
+      }
+    ],
+    "6. Home page and health check": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213258392
+      }
+    ],
+    "7. Tests": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213778085
+      }
+    ],
+    "8. Deployment files": [
+      {
+        "executionId": "54bb6299-e64a-49f8-bc0b-488dc416477d",
+        "chatSessionId": "sess_1eb44663-fefd-47a2-83f0-3a5268a25f73",
+        "timestamp": 1795213960592
+      }
+    ]
+  }
+}

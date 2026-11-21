@@ -1,0 +1,72 @@
+# ============================================
+# Lazarus .gitignore
+# IMPORTANT: never ignore .kiro/ — judges must see it
+# ============================================
+
+# --- Secrets & environment ---
+.env
+.env.*
+!.env.example
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+pip-wheel-metadata/
+
+# --- Virtual environments ---
+.venv/
+venv/
+env/
+ENV/
+
+# --- Django ---
+db.sqlite3
+db.sqlite3-journal
+*.log
+/staticfiles/
+/media/
+
+# --- Lazarus runtime data (uploads, jobs, exports) ---
+/uploads/
+/workspace/
+/exports/
+/parity/recordings/
+/parity/reports/
+
+# --- Tests & coverage ---
+.pytest_cache/
+.hypothesis/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+
+# --- Tools & caches ---
+.mypy_cache/
+.ruff_cache/
+.cache/
+
+# --- Docker (local parity sandbox data) ---
+/docker/data/
+*.pid
+
+# --- Editors & OS ---
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+.idea/
+# Keep shared Kiro/VS Code settings out unless intentional
+.vscode/
+
+# --- Never ignore these (explicit) ---
+!.kiro/
+!.kiro/**
+!samples/corpse/**

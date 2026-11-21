@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: lazarus
+    runtime: python
+    plan: free
+    buildCommand: ./build.sh
+    startCommand: gunicorn lazarus.wsgi:application
+    healthCheckPath: /health/
+    envVars:
+      - key: DJANGO_SECRET_KEY
+        generateValue: true
+      - key: DEBUG
+        value: "False"
+      - key: PYTHON_VERSION
+        value: "3.12.7"
