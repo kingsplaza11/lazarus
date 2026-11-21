@@ -19,7 +19,11 @@
     {% csrf_token %}
     <button class="btn" type="submit">Re-run autopsy</button>
   </form>
-  <button class="btn btn-primary" type="button" disabled title="Coming in the spec generator stage">Write the spec</button>
+  <form method="post" action="{% url 'specgen:generate' corpse.pk %}" class="inline-form">
+    {% csrf_token %}
+    <button class="btn btn-primary" type="submit">{% if spec %}Rewrite the spec{% else %}Write the spec{% endif %}</button>
+  </form>
+  {% if spec %}<a class="btn" href="{% url 'specgen:detail' corpse.pk %}">View the spec</a>{% endif %}
 </section>
 
 <section class="panel">

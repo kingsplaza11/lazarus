@@ -136,3 +136,12 @@ code { font-family: ui-monospace, Menlo, monospace; font-size: 0.85em; color: #a
 .form-card p { margin: 0.2rem 0; }
 code { font-family: ui-monospace, Menlo, monospace; font-size: 0.85em; color: #a5b4fc; }
 .actions-left { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center; margin-top: 1rem; }
+/* ---- Spec generator (append to lazarus.css) ---- */
+.ears-ok { color: #7ee787; }
+.next-step { margin-top: 0.75rem; }
+.file-tabs { flex-wrap: wrap; }
+.file-tabs button { font-family: ui-monospace, Menlo, monospace; font-size: 0.8rem; }
+.file-actions { margin: 0.75rem 0 0.25rem; font-size: 0.85rem; }
+.file-actions a { color: #7ee787; }
+.spec-file { white-space: pre-wrap; word-break: break-word; background: #0f0f0f; border: 1px solid #262626;
+             border-radius: 8px; padding: 1rem; font-size: 0.82rem; line-height: 1.5; max-height: 70vh; overflow: auto; }

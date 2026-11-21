@@ -1,0 +1,38 @@
+{% extends "web/base.html" %}
+{% block title %}Lazarus · Spec for {{ corpse.name }}{% endblock %}
+{% block content %}
+<section class="panel">
+  <a class="back" href="{% url 'autopsy:report' corpse.pk %}">&larr; Back to the autopsy</a>
+  <h1>Resurrection spec: {{ corpse.name }}</h1>
+  <p class="meta">Written {{ spec.created_at|date:"M j, Y H:i" }} · {{ files|length }} files · {{ criteria_total }} acceptance criteria</p>
+
+  {% if criteria_invalid %}
+  <div class="alert alert-warning"><p>{{ criteria_invalid|length }} criteria are not valid EARS.</p></div>
+  {% else %}
+  <p class="ears-ok">All {{ criteria_total }} acceptance criteria are valid EARS, each traced to its legacy source.</p>
+  {% endif %}
+
+  <div class="actions-left">
+    <a class="btn btn-primary" href="{% url 'specgen:download' corpse.pk %}">Download .kiro/ folder</a>
+    <form method="post" action="{% url 'specgen:generate' corpse.pk %}" class="inline-form">
+      {% csrf_token %}
+      <button class="btn" type="submit">Rewrite the spec</button>
+    </form>
+  </div>
+  <p class="muted next-step">Next: unzip into an empty folder, open it in Kiro, and run the tasks to resurrect {{ corpse.name }}.</p>
+</section>
+
+<section class="panel" x-data="{ tab: 0 }">
+  <div class="tabs file-tabs" role="tablist">
+    {% for file in files %}
+    <button type="button" role="tab" :class="{ active: tab === {{ file.index }} }" @click="tab = {{ file.index }}">{{ file.path }}</button>
+    {% endfor %}
+  </div>
+  {% for file in files %}
+  <div x-show="tab === {{ file.index }}" {% if not forloop.first %}x-cloak{% endif %}>
+    <p class="file-actions"><a href="{% url 'specgen:file' corpse.pk %}?path={{ file.path|urlencode }}">Download this file</a></p>
+    <pre class="spec-file">{{ file.content }}</pre>
+  </div>
+  {% endfor %}
+</section>
+{% endblock %}

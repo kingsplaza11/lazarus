@@ -26,4 +26,8 @@ def report(request, pk: int):
     if autopsy is None or autopsy.status != Status.DONE:
         messages.info(request, "No autopsy yet. Begin one below.")
         return redirect("intake:detail", pk=corpse.pk)
-    return render(request, "autopsy/report.html", {"corpse": corpse, "autopsy": autopsy, "report": autopsy.report})
+    from specgen.services import latest_spec  # local import: specgen depends on autopsy, not the reverse
+
+    return render(request, "autopsy/report.html", {
+        "corpse": corpse, "autopsy": autopsy, "report": autopsy.report, "spec": latest_spec(corpse),
+    })

@@ -7,4 +7,5 @@ urlpatterns = [
     path('', include('web.urls')),
     path("corpses/", include("intake.urls")),
     path("corpses/", include("autopsy.urls")),
+    path("corpses/", include("specgen.urls")),
 ]
