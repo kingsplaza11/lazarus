@@ -1,6 +1,7 @@
 from hypothesis import given, settings
 from hypothesis import strategies as st
 
+from autopsy.parsers.dead_sql import find_dead_sql
 from autopsy.parsers.forms import find_forms, mask_php
 from autopsy.parsers.sql import clean_table_name, detect_sql, match_table, parse_schema, split_top_level
 
@@ -108,3 +109,10 @@ def test_prop_find_forms_never_crashes(text):
     for form in find_forms(text):
         assert form["line"] >= 1
         assert form["method"] == form["method"].upper()
+
+
+def test_find_dead_sql():
+    text = "CREATE TABLE a (id int) TYPE=MyISAM;\nCREATE TABLE b (t timestamp(14)) ENGINE=InnoDB;\nSET OPTION SQL_BIG_SELECTS=1"
+    found = find_dead_sql(text)
+    assert [(f["syntax"], f["line"]) for f in found] == [("TYPE=", 1), ("TIMESTAMP(n)", 2), ("SET OPTION", 3)]
+    assert find_dead_sql("CREATE TABLE c (id int) ENGINE=InnoDB; SELECT type = 'x' FROM t") == []

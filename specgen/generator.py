@@ -276,6 +276,10 @@ def modernisation_requirement(report: dict) -> Requirement:
     dead = [f["name"] for f in cause.get("functions", [])]
     if dead:
         req.criteria.append(f"THE system SHALL NOT depend on any of the {len(dead)} removed PHP functions found by the autopsy, such as {join_names(dead, 3)}. {src('cause of death')}")
+    dead_sql = [item["syntax"] for item in cause.get("sql", [])]
+    if dead_sql:
+        source_file = (cause.get("sql_files") or ["cause of death"])[0]
+        req.criteria.append(f"THE system SHALL create and query its tables without SQL syntax removed from MySQL, such as {join_names(dead_sql, 3)}. {src(source_file)}")
     req.criteria.append(f"THE system SHALL perform all database access through parameterised queries. {src('autopsy: ' + str(report['summary']['sql_statements']) + ' SQL statements')}")
     req.criteria.append(f"THE system SHALL protect every form against cross-site request forgery. {src('autopsy: ' + str(report['summary']['forms']) + ' forms')}")
     password_tables = [t["name"] for t in report.get("tables", []) if any("pass" in c["name"] for c in t["columns"])]

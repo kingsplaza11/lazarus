@@ -67,6 +67,8 @@ def test_mixed_html_and_php():
 
 
 def test_death_reason():
+    assert death_reason("session_unregister") == "removed in PHP 5.4"
+    assert death_reason("session_register") == "removed in PHP 5.4"
     assert death_reason("mysql_query") == "removed in PHP 7.0"
     assert death_reason("each") == "removed in PHP 8.0"
     assert death_reason("mysqli_query") is None

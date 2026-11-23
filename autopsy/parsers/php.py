@@ -25,6 +25,11 @@ INCLUDE_TYPES = {
 STRING_TYPES = {"string", "encapsulated_string", "heredoc", "nowdoc"}
 
 # Functions that no longer exist in modern PHP: the "cause of death".
+REMOVED_IN_PHP54 = {
+    "session_register", "session_unregister", "session_is_registered", "define_syslog_variables",
+    "import_request_variables", "mysqli_bind_param", "mysqli_bind_result", "mysqli_client_encoding",
+    "mysqli_fetch", "mysqli_param_count", "mysqli_get_metadata", "mysqli_send_long_data",
+}
 REMOVED_IN_PHP7 = {
     "mysql_affected_rows", "mysql_client_encoding", "mysql_close", "mysql_connect", "mysql_create_db",
     "mysql_data_seek", "mysql_db_name", "mysql_db_query", "mysql_drop_db", "mysql_errno", "mysql_error",
@@ -48,6 +53,8 @@ REMOVED_IN_PHP8 = {
 
 
 def death_reason(name: str) -> str | None:
+    if name in REMOVED_IN_PHP54:
+        return "removed in PHP 5.4"
     if name in REMOVED_IN_PHP7:
         return "removed in PHP 7.0"
     if name in REMOVED_IN_PHP8:

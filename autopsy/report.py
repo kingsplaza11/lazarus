@@ -7,6 +7,7 @@ from pathlib import Path
 
 from intake.tree import detect_language, iter_files
 
+from .parsers.dead_sql import find_dead_sql
 from .parsers.forms import find_forms
 from .parsers.php import parse_php
 from .parsers.sql import match_table, parse_schema
@@ -136,13 +137,21 @@ def build_report(root: Path) -> dict:
         analysis["forms"] = find_forms(source.decode("utf-8", "replace"))
         analysis["path"] = rel
         analysis["lines"] = source.count(b"\n") + 1
+        analysis["dead_sql"] = find_dead_sql(source.decode("utf-8", "replace"))
         analyses[rel] = analysis
 
     # Database schema from .sql files.
     tables: list[dict] = []
+    dead_sql: list[dict] = []
+    for rel, analysis in analyses.items():
+        dead_sql.extend({**item, "file": rel} for item in analysis["dead_sql"])
     for path in iter_files(root):
         if path.suffix.lower() == ".sql":
-            tables.extend(parse_schema(path.read_text("utf-8", "replace")))
+            sql_text = path.read_text("utf-8", "replace")
+            tables.extend(parse_schema(sql_text))
+            rel = path.relative_to(root).as_posix()
+            if not (i18n and rel.startswith(i18n["path"] + "/")):
+                dead_sql.extend({**item, "file": rel} for item in find_dead_sql(sql_text))
     schema_names = [t["name"] for t in tables]
 
     # Resolve includes into a graph.
@@ -222,11 +231,22 @@ def build_report(root: Path) -> dict:
     cause = None
     if dead:
         total = sum(dead.values())
-        versions = sorted({reasons[name].replace("removed in PHP ", "") for name in dead})
+        versions = sorted({reasons[name].replace("removed in PHP ", "") for name in dead},
+                          key=lambda v: tuple(int(p) for p in v.split(".")))
+        joined = versions[0] if len(versions) == 1 else ", ".join(versions[:-1]) + " and " + versions[-1]
         cause = (
             f"{total} call{'s' if total != 1 else ''} to {len(dead)} function{'s' if len(dead) != 1 else ''} "
-            f"removed in PHP {' and '.join(versions)}, in {len(dead_files)} file{'s' if len(dead_files) != 1 else ''}."
+            f"removed in PHP {joined}, in {len(dead_files)} file{'s' if len(dead_files) != 1 else ''}."
         )
+    sql_counts = Counter(item["syntax"] for item in dead_sql)
+    sql_reasons = {item["syntax"]: item["why"] for item in dead_sql}
+    sql_files = sorted({item["file"] for item in dead_sql})
+    if dead_sql:
+        sql_sentence = (
+            f"{len(dead_sql)} use{'s' if len(dead_sql) != 1 else ''} of SQL syntax modern MySQL rejects "
+            f"({', '.join(sql_counts)}), in {len(sql_files)} file{'s' if len(sql_files) != 1 else ''}."
+        )
+        cause = f"{cause} Plus {sql_sentence[0].lower()}{sql_sentence[1:]}" if cause else sql_sentence
 
     files = [
         {
@@ -240,6 +260,7 @@ def build_report(root: Path) -> dict:
             "forms": a["forms"],
             "redirects": a["redirects"],
             "dead_calls": a["dead_calls"],
+            "dead_sql": a["dead_sql"],
             "uses_session": a["uses_session"],
             "has_errors": a["has_errors"],
         }
@@ -269,6 +290,9 @@ def build_report(root: Path) -> dict:
             "summary": cause,
             "functions": [{"name": n, "count": c, "why": reasons[n]} for n, c in dead.most_common()],
             "files": dead_files,
+            "sql": [{"syntax": n, "count": c, "why": sql_reasons[n]} for n, c in sql_counts.most_common()],
+            "sql_files": sql_files,
+            "sql_uses": dead_sql[:200],
         },
         "i18n": i18n,
         "pages": pages,

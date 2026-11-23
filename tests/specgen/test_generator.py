@@ -93,6 +93,15 @@ def test_look_and_feel_without_assets_still_requires_styling():
     assert validate_ears(requirements)[1] == []
 
 
+def test_modernisation_covers_removed_sql_syntax():
+    report = taskfreak_like_report()
+    report["cause_of_death"]["sql"] = [{"syntax": "TYPE=", "count": 9, "why": "removed"}]
+    report["cause_of_death"]["sql_files"] = ["install/mysql.init.php"]
+    requirements = pick(files_for(report), "requirements.md")
+    assert "without SQL syntax removed from MySQL, such as TYPE=. (source: install/mysql.init.php)" in requirements
+    assert validate_ears(requirements)[1] == []
+
+
 def test_design_has_url_map_and_app_qualified_foreign_keys():
     design = pick(files_for(), "design.md")
     assert "| `login.php` | `/login/` | accounts | `login` |" in design

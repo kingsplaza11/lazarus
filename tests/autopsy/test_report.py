@@ -141,6 +141,29 @@ def test_cause_of_death_wording(tmp_path):
     assert summary == "2 calls to 2 functions removed in PHP 7.0 and 8.0, in 1 file."
 
 
+def test_cause_of_death_wording_three_versions(tmp_path):
+    write(tmp_path, "a.php", "<?php session_unregister('u'); mysql_query('x'); $f = create_function('', '');")
+    summary = build_report(tmp_path)["cause_of_death"]["summary"]
+    assert summary == "3 calls to 3 functions removed in PHP 5.4, 7.0 and 8.0, in 1 file."
+
+
+def test_removed_sql_syntax_is_a_cause_of_death(tmp_path):
+    write(tmp_path, "index.php", "<?php echo 1;")
+    write(tmp_path, "install/setup.php", "<?php $q = \"CREATE TABLE frk_x (id int) TYPE=MyISAM\"; $r = mysql_query($q);")
+    write(tmp_path, "install/schema.sql", "CREATE TABLE frk_y (id int, t TIMESTAMP(14)) TYPE=MyISAM;")
+    cause = build_report(tmp_path)["cause_of_death"]
+    assert {i["syntax"]: i["count"] for i in cause["sql"]} == {"TYPE=": 2, "TIMESTAMP(n)": 1}
+    assert cause["sql_files"] == ["install/schema.sql", "install/setup.php"]
+    assert cause["summary"] == ("1 call to 1 function removed in PHP 7.0, in 1 file. "
+                                "Plus 3 uses of SQL syntax modern MySQL rejects (TYPE=, TIMESTAMP(n)), in 2 files.")
+
+
+def test_only_removed_sql_syntax(tmp_path):
+    write(tmp_path, "index.php", "<?php $q = 'CREATE TABLE t (id int) TYPE=HEAP';")
+    assert build_report(tmp_path)["cause_of_death"]["summary"] == \
+        "1 use of SQL syntax modern MySQL rejects (TYPE=), in 1 file."
+
+
 def test_resolve_include():
     known = {"index.php", "include/html/header.php", "include/classes/tzn_mysql.php"}
     assert resolve_include("?html/header.php", "index.php", known) == "include/html/header.php"

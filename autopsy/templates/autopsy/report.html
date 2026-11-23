@@ -38,8 +38,19 @@
       {% endfor %}
     </tbody>
   </table>
-  {% else %}
-  <p>No calls to removed PHP functions were found. This code may still run on modern PHP.</p>
+  {% endif %}
+  {% if report.cause_of_death.sql %}
+  <table class="data">
+    <thead><tr><th>SQL syntax</th><th>Uses</th><th>Status</th></tr></thead>
+    <tbody>
+      {% for item in report.cause_of_death.sql %}
+      <tr><td><code>{{ item.syntax }}</code></td><td>{{ item.count }}</td><td>{{ item.why }}</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% endif %}
+  {% if not report.cause_of_death.summary %}
+  <p>No removed PHP functions or SQL syntax were found. This code may still run on a modern stack.</p>
   {% endif %}
 </section>
 
