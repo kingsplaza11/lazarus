@@ -74,6 +74,25 @@ def test_modernisation_lists_removed_functions_libraries_and_passwords():
     assert "salted one-way hash" in requirements
 
 
+def test_look_and_feel_requirement_cites_original_styles():
+    files = files_for()
+    requirements, tasks = pick(files, "requirements.md"), pick(files, "tasks.md")
+    look = requirements.split("Look and feel\n")[1].split("### Requirement")[0]
+    assert "shared stylesheet linked from the base template" in look
+    assert "skins/redfreak/style.css" in look
+    assert "original skins bluefreak and redfreak" in look
+    assert "Look and feel: port the original styling from `legacy-assets/skins/redfreak/style.css`" in tasks
+    assert "legacy-assets/" in files["steering/product.md"]
+
+
+def test_look_and_feel_without_assets_still_requires_styling():
+    report = taskfreak_like_report()
+    report.pop("assets")
+    requirements = pick(files_for(report), "requirements.md")
+    assert "consistent spacing, readable type and clear focus states" in requirements
+    assert validate_ears(requirements)[1] == []
+
+
 def test_design_has_url_map_and_app_qualified_foreign_keys():
     design = pick(files_for(), "design.md")
     assert "| `login.php` | `/login/` | accounts | `login` |" in design

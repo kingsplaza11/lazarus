@@ -1,0 +1,9 @@
+.venv
+venv
+uploads
+staticfiles
+*.sqlite3
+.git
+__pycache__
+.pytest_cache
+.hypothesis

@@ -6,6 +6,7 @@ import json
 import re
 import traceback
 import zipfile
+from pathlib import Path
 
 from autopsy.models import Autopsy
 from intake.models import Corpse
@@ -70,10 +71,49 @@ def export_filename(corpse: Corpse) -> str:
     return f"{slug}-kiro.zip"
 
 
+MAX_ASSET_BYTES = 8 * 1024 * 1024
+ASSET_SUFFIXES = {".css", ".png", ".gif", ".jpg", ".jpeg", ".svg", ".ico", ".webp"}
+
+
+def legacy_assets(spec: Spec) -> list[tuple[str, Path]]:
+    """(relative path, file) for the original look: every stylesheet plus images in skin and stylesheet folders.
+
+    These go into the download as legacy-assets/ so Kiro can port the real styling instead of inventing one.
+    """
+    corpse = spec.autopsy.corpse
+    root = Path(corpse.storage_path or "")
+    assets = (spec.autopsy.report or {}).get("assets") or {}
+    if not root.is_dir() or not assets:
+        return []
+    folders = {root / skin["path"] for skin in assets.get("skins", [])}
+    folders |= {(root / sheet["path"]).parent for sheet in assets.get("stylesheets", [])}
+    chosen: dict[str, Path] = {}
+    for sheet in assets.get("stylesheets", []):
+        path = root / sheet["path"]
+        if path.is_file():
+            chosen[sheet["path"]] = path
+    for folder in sorted(folders):
+        if not folder.is_dir() or root.resolve() not in [folder.resolve(), *folder.resolve().parents]:
+            continue
+        for path in sorted(folder.rglob("*")):
+            if path.is_file() and not path.is_symlink() and path.suffix.lower() in ASSET_SUFFIXES:
+                chosen.setdefault(path.relative_to(root).as_posix(), path)
+    picked, total = [], 0
+    for rel, path in sorted(chosen.items(), key=lambda item: (not item[0].endswith(".css"), item[0])):
+        size = path.stat().st_size
+        if total + size > MAX_ASSET_BYTES:
+            continue
+        picked.append((rel, path))
+        total += size
+    return picked
+
+
 def export_zip(spec: Spec) -> bytes:
-    """A zip whose single top-level folder is .kiro/, ready to drop into an empty project."""
+    """The .kiro/ folder ready to drop into an empty project, plus legacy-assets/ with the original styling."""
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w", zipfile.ZIP_DEFLATED) as zf:
         for path, content in sorted(spec_files(spec).items()):
             zf.writestr(f".kiro/{path}", content)
+        for rel, path in legacy_assets(spec):
+            zf.write(path, f"legacy-assets/{rel}")
     return buffer.getvalue()

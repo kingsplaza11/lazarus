@@ -21,6 +21,28 @@ KNOWN_LIBRARIES = {
 }
 
 
+SKIN_DIR_NAMES = {"skin", "skins", "theme", "themes", "style", "styles", "css"}
+
+
+def find_assets(root: Path, library_prefixes: tuple[str, ...]) -> dict:
+    """Stylesheets and skins that define how the app looks (bundled libraries excluded)."""
+    stylesheets = []
+    for path in iter_files(root):
+        rel = path.relative_to(root).as_posix()
+        if path.suffix.lower() == ".css" and not rel.startswith(library_prefixes):
+            stylesheets.append({"path": rel, "bytes": path.stat().st_size})
+    skins = []
+    for folder in sorted(p for p in root.rglob("*") if p.is_dir() and p.name.lower() in SKIN_DIR_NAMES):
+        rel = folder.relative_to(root).as_posix()
+        if rel.startswith(library_prefixes):
+            continue
+        names = sorted(c.name for c in folder.iterdir() if c.is_dir())
+        if names:
+            skins.append({"path": rel, "names": names})
+    stylesheets.sort(key=lambda s: (-s["bytes"], s["path"]))
+    return {"stylesheets": stylesheets, "skins": skins}
+
+
 def find_libraries(root: Path) -> list[dict]:
     """Find bundled third-party libraries: subfolders with their own README/LICENSE, or well-known names.
 
@@ -98,6 +120,7 @@ def build_report(root: Path) -> dict:
         if not (i18n and (lib["path"] == i18n["path"] or lib["path"].startswith(i18n["path"] + "/")))
     ]
     library_prefixes = tuple(lib["path"] + "/" for lib in libraries)
+    assets = find_assets(root, library_prefixes)
     skipped_translations = 0
 
     analyses: dict[str, dict] = {}
@@ -238,8 +261,10 @@ def build_report(root: Path) -> dict:
             "files_with_errors": sum(1 for a in analyses.values() if a["has_errors"]),
             "skipped_translation_files": skipped_translations,
             "libraries": len(libraries),
+            "stylesheets": len(assets["stylesheets"]),
         },
         "libraries": libraries,
+        "assets": assets,
         "cause_of_death": {
             "summary": cause,
             "functions": [{"name": n, "count": c, "why": reasons[n]} for n, c in dead.most_common()],

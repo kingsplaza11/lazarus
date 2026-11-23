@@ -55,6 +55,8 @@ The spec generator turns a completed autopsy report into a ready-to-use Kiro `.k
 
 #### Acceptance Criteria
 1. WHEN a user opens the spec page THEN THE system SHALL show each generated file in its own tab and state how many criteria are valid EARS.
-2. WHEN a user clicks "Download .kiro/ folder" THEN THE system SHALL return a zip whose top-level folder is `.kiro/`.
+2. WHEN a user clicks "Download .kiro/ folder" THEN THE system SHALL return a zip containing the `.kiro/` folder and a `legacy-assets/` folder with the original stylesheets and their images.
+5. THE system SHALL NOT include any legacy PHP source file in the download.
+6. IF the original stylesheets and images exceed 8 MB THEN THE system SHALL include the stylesheets first and skip the images that do not fit.
 3. WHEN a user downloads a single file THEN THE system SHALL return only a file that belongs to the generated spec.
 4. IF a requested file path is not part of the spec THEN THE system SHALL respond with 404.

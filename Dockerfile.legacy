@@ -1,0 +1,21 @@
+# The original TaskFreak 0.6.4, raised from the dead on the PHP it was written for.
+# Build context is the Lazarus repo root. samples/corpse/ is copied, never modified.
+FROM php:5.6-apache
+
+# The mysql_* extension that PHP 7 removed (the cause of death) still exists here.
+RUN docker-php-ext-install mysql
+
+# Settings 2005-era PHP apps expect.
+RUN { \
+      echo "short_open_tag = On"; \
+      echo "display_errors = Off"; \
+      echo "log_errors = On"; \
+      echo "error_reporting = E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT"; \
+      echo "date.timezone = UTC"; \
+    } > /usr/local/etc/php/conf.d/legacy.ini
+
+COPY samples/corpse/ /var/www/html/
+
+# Old SQL syntax that modern MariaDB rejects; patched only inside this image.
+RUN find /var/www/html -name "*.sql" -exec sed -i 's/TYPE=MyISAM/ENGINE=MyISAM/Ig; s/TYPE=InnoDB/ENGINE=InnoDB/Ig' {} + \
+ && chown -R www-data:www-data /var/www/html

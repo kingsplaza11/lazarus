@@ -287,6 +287,28 @@ def modernisation_requirement(report: dict) -> Requirement:
     return req
 
 
+def look_requirement(report: dict) -> Requirement:
+    """Always present: the rebuild must not ship unstyled. Cites the original stylesheets when found."""
+    req = Requirement(
+        title="Look and feel",
+        story="As a returning user, I want the resurrected app to look finished and familiar, so that I can use it without relearning it.",
+    )
+    assets = report.get("assets") or {}
+    sheets = assets.get("stylesheets", [])
+    skins = assets.get("skins", [])
+    req.criteria.append(f"THE system SHALL style every page through one shared stylesheet linked from the base template. {src(sheets[0]['path'] if sheets else 'autopsy: no stylesheets found')}")
+    if sheets:
+        req.criteria.append(f"THE system SHALL keep the layout, colours, images and typography of the original stylesheet {sheets[0]['path']}, provided in legacy-assets/. {src(sheets[0]['path'])}")
+    else:
+        req.criteria.append(f"THE system SHALL present forms, tables and navigation with consistent spacing, readable type and clear focus states. {src('autopsy: no stylesheets found')}")
+    if skins and len(skins[0]["names"]) > 1:
+        names = join_names(skins[0]["names"], 6)
+        req.criteria.append(f"WHERE more than one skin is offered THE system SHALL let the user choose between the original skins {names}. {src(skins[0]['path'])}")
+    req.criteria.append(f"THE system SHALL show the signed-in user and the main navigation on every page after sign-in. {src('autopsy: ' + str(report['summary']['pages']) + ' pages')}")
+    req.criteria.append(f"THE system SHALL lay out every page so it remains usable on a phone-sized screen. {src('modernisation')}")
+    return req
+
+
 def i18n_requirement(report: dict) -> Requirement | None:
     i18n = report.get("i18n")
     if not i18n:
@@ -310,6 +332,7 @@ def build_requirements(report: dict, models_: list[ModelSpec]) -> list[Requireme
     if report.get("tables"):
         reqs.append(data_requirement(models_, report["tables"]))
     reqs.append(modernisation_requirement(report))
+    reqs.append(look_requirement(report))
     extra = i18n_requirement(report)
     if extra:
         reqs.append(extra)
@@ -404,8 +427,10 @@ def tasks_md(name: str, report: dict, models_: list[ModelSpec], reqs: list[Requi
     n = 1
     out = [f"# Implementation Plan: {name} (resurrected)", ""]
 
-    out += [f"- [ ] {n}. Set up the Django project with `accounts` and `core` apps, templates and HTMX",
-            f"  - _Requirements: {', '.join(modern.refs()[:3]) if modern else '-'}_", ""]
+    look = by_title.get("Look and feel")
+    setup_refs = (modern.refs()[:3] if modern else []) + (look.refs()[:1] if look else [])
+    out += [f"- [ ] {n}. Set up the Django project with `accounts` and `core` apps, a styled `base.html` with navigation, and HTMX",
+            f"  - _Requirements: {', '.join(setup_refs) or '-'}_", ""]
     n += 1
     if data and models_:
         out += [f"- [ ] {n}. Create the data models"]
@@ -432,6 +457,12 @@ def tasks_md(name: str, report: dict, models_: list[ModelSpec], reqs: list[Requi
         out += [f"- [ ] {n}. Modernise: remove legacy dependencies, harden forms and passwords, replace bundled libraries",
                 f"  - _Requirements: {', '.join(modern.refs())}_", ""]
         n += 1
+    if look:
+        sheets = (report.get("assets") or {}).get("stylesheets", [])
+        source = f" from `legacy-assets/{sheets[0]['path']}` (included in the download, with its images)" if sheets else ""
+        out += [f"- [ ] {n}. Look and feel: port the original styling{source} into `static/` and apply it to every template",
+                f"  - _Requirements: {', '.join(look.refs())}_", ""]
+        n += 1
     i18n = by_title.get("Translations")
     if i18n:
         out += [f"- [ ] {n}. Translations with Django i18n, porting the original language files",
@@ -453,6 +484,7 @@ def steering(name: str, report: dict, models_: list[ModelSpec]) -> dict[str, str
         f"- Legacy pages to preserve: {pages}.\n"
         "- Goal: same features and behaviour as the original, on a supported, secure stack.\n"
         "- Do not add features the original did not have until parity is reached.\n"
+        "- The original stylesheets and images are in `legacy-assets/`; reuse them rather than inventing a new look.\n"
     )
     tech = (
         "---\ninclusion: always\n---\n\n# Tech stack\n\n"

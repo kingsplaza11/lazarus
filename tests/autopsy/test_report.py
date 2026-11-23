@@ -125,6 +125,16 @@ def test_find_libraries_reports_top_most_only(tmp_path):
     assert [lib["path"] for lib in find_libraries(tmp_path)] == ["xajax"]
 
 
+def test_assets_capture_stylesheets_and_skins(tmp_path):
+    write(tmp_path, "index.php", "<?php echo 1;")
+    write(tmp_path, "skins/redfreak/style.css", "body { color: red; }" * 10)
+    write(tmp_path, "skins/bluefreak/style.css", "body { color: blue; }")
+    write(tmp_path, "jscalendar/calendar.css", ".cal {}")
+    assets = build_report(tmp_path)["assets"]
+    assert [s["path"] for s in assets["stylesheets"]] == ["skins/redfreak/style.css", "skins/bluefreak/style.css"]
+    assert assets["skins"] == [{"path": "skins", "names": ["bluefreak", "redfreak"]}]
+
+
 def test_cause_of_death_wording(tmp_path):
     write(tmp_path, "a.php", "<?php mysql_query('x'); $f = create_function('', '');")
     summary = build_report(tmp_path)["cause_of_death"]["summary"]

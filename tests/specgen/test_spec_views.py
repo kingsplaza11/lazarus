@@ -55,6 +55,9 @@ def test_views_generate_show_and_download(client, autopsied_demo):
     names = zipfile.ZipFile(io.BytesIO(archive.content)).namelist()
     assert ".kiro/steering/product.md" in names
     assert any(n.endswith("/requirements.md") and n.startswith(".kiro/specs/") for n in names)
+    assert any(n.startswith("legacy-assets/") and n.endswith(".css") for n in names)
+    assert all(n.startswith((".kiro/", "legacy-assets/")) for n in names)
+    assert not any(n.endswith(".php") for n in names)
 
     single = client.get(f"/corpses/{pk}/spec/file/", {"path": "steering/tech.md"})
     assert single.status_code == 200 and b"Django" in single.content

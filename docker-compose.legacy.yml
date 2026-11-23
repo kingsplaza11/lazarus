@@ -1,0 +1,29 @@
+# Run the original TaskFreak for parity checks:
+#   docker compose -f docker-compose.legacy.yml up --build
+# Then open http://localhost:8080/install/ once to create the database tables.
+services:
+  legacy-db:
+    image: mariadb:10.5
+    platform: linux/amd64
+    environment:
+      MARIADB_ROOT_PASSWORD: lazarus
+      MARIADB_DATABASE: taskfreak
+      MARIADB_USER: taskfreak
+      MARIADB_PASSWORD: taskfreak
+    # 2005-era apps insert '' into number columns; strict mode would reject that.
+    command: ["--sql-mode=", "--character-set-server=utf8", "--collation-server=utf8_general_ci"]
+    volumes:
+      - legacy-db-data:/var/lib/mysql
+
+  legacy-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.legacy
+    platform: linux/amd64
+    ports:
+      - "8080:80"
+    depends_on:
+      - legacy-db
+
+volumes:
+  legacy-db-data:
