@@ -1,0 +1,15 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Tests after every spec task",
+      "trigger": "PostTaskExecution",
+      "description": "After Kiro finishes a task from a spec's tasks.md, runs the whole suite so a finished task is always a green task. Command action: no credits.",
+      "action": {
+        "type": "command",
+        "command": ".venv/bin/pytest -q",
+        "timeout": 300
+      }
+    }
+  ]
+}

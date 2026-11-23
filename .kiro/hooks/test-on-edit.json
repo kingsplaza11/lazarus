@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Test Lazarus on edit",
+      "trigger": "PostToolUse",
+      "description": "Runs the full Lazarus test suite (stopping at the first failure) after Kiro edits Python code in any Lazarus app. Command action: no credits.",
+      "matcher": "fs_write|str_replace",
+      "action": {
+        "type": "command",
+        "command": "if grep -qE '(intake|autopsy|specgen|parity|web)/[^\" ]*\\.py'; then .venv/bin/pytest -q -x; fi",
+        "timeout": 180
+      }
+    }
+  ]
+}

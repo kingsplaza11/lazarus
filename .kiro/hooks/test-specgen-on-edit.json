@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Test specgen on edit",
+      "trigger": "PostToolUse",
+      "description": "Runs the specgen generator tests after Kiro edits specgen/generator.py or specgen/naming.py.",
+      "matcher": "fs_write|str_replace",
+      "action": {
+        "type": "command",
+        "command": "if grep -qE 'specgen/(generator|naming)\\.py'; then .venv/bin/pytest -q tests/specgen/test_generator.py; fi",
+        "timeout": 120
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "version": "v1",
+  "hooks": [
+    {
+      "name": "Spec sync reminder",
+      "trigger": "PostToolUse",
+      "description": "When Kiro edits a models.py file, prints which design.md Data Models section must be updated so specs and code never drift apart. Command action: no credits.",
+      "matcher": "fs_write|str_replace",
+      "action": {
+        "type": "command",
+        "command": "app=$(grep -oE '(intake|autopsy|specgen|parity)/models\\.py' | head -1 | cut -d/ -f1); if [ -n \"$app\" ]; then echo \"Spec sync: $app/models.py changed. Update the Data Models section of the matching design.md in .kiro/specs/ (spec-generator for specgen, project-skeleton or $app for the others).\"; fi",
+        "timeout": 10
+      }
+    }
+  ]
+}
