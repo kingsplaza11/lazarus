@@ -31,7 +31,10 @@ def detail(request, pk: int):
     order = {"requirements.md": 0, "design.md": 1, "tasks.md": 2}
     ordered = sorted(files.items(), key=lambda item: (
         not item[0].startswith("specs/"), order.get(item[0].rsplit("/", 1)[-1], 9), item[0]))
+    from parity.services import latest_check  # local import: parity depends on specgen's output, not the reverse
+
     return render(request, "specgen/detail.html", {
+        "check": latest_check(corpse),
         "corpse": corpse,
         "spec": spec,
         "files": [{"path": path, "content": content, "index": i} for i, (path, content) in enumerate(ordered)],

@@ -37,7 +37,8 @@ def demo(request):
 
 
 def detail(request, pk: int):
-    from autopsy.models import Autopsy  # local import keeps intake usable on its own
+    from autopsy.models import Autopsy  # local imports keep intake usable on its own
+    from parity.services import latest_check
 
     corpse = get_object_or_404(Corpse, pk=pk)
     languages = corpse.languages or {}
@@ -49,5 +50,6 @@ def detail(request, pk: int):
             "languages": languages,
             "has_php": languages.get("PHP", 0) > 0,
             "autopsy": Autopsy.objects.filter(corpse=corpse).first(),
+            "check": latest_check(corpse),
         },
     )

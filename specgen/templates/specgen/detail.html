@@ -19,7 +19,15 @@
       <button class="btn" type="submit">Rewrite the spec</button>
     </form>
   </div>
-  <p class="muted next-step">Next: unzip into an empty folder, open it in Kiro, and run the tasks to resurrect {{ corpse.name }}.</p>
+  {% if check %}
+  <div class="score-card {% if check.score >= 80 %}score-good{% elif check.score >= 50 %}score-mid{% else %}score-low{% endif %}">
+    <strong>{{ check.score }}%</strong>
+    <span>resurrected · {{ check.results.summary }} · <a href="{% url 'parity:check' corpse.pk %}">details</a></span>
+  </div>
+  {% else %}
+  <p class="muted next-step">Next: unzip into an empty folder, open it in Kiro, and run the tasks to resurrect {{ corpse.name }}.
+    Then score the rebuild with <code>python manage.py resurrection_check {{ corpse.pk }} --url &lt;rebuild url&gt; --source &lt;rebuild folder&gt;</code>.</p>
+  {% endif %}
 </section>
 
 <section class="panel" x-data="{ tab: 0 }">

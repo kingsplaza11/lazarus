@@ -145,3 +145,12 @@ code { font-family: ui-monospace, Menlo, monospace; font-size: 0.85em; color: #a
 .file-actions a { color: #7ee787; }
 .spec-file { white-space: pre-wrap; word-break: break-word; background: #0f0f0f; border: 1px solid #262626;
              border-radius: 8px; padding: 1rem; font-size: 0.82rem; line-height: 1.5; max-height: 70vh; overflow: auto; }
+/* ---- Resurrection check (append to lazarus.css) ---- */
+.score-card { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; padding: 1rem 1.25rem;
+              border-radius: 12px; border: 1px solid #2c2c2c; background: #0f0f0f; }
+.score-card strong { font-size: 2.6rem; line-height: 1; }
+.score-card span { color: #b8b3a8; }
+.score-good strong, .ok { color: #7ee787; }
+.score-mid strong, .partial { color: #e3b341; }
+.score-low strong, .bad { color: #ff7b72; }
+.check-link { display: inline-flex; gap: .5rem; align-items: baseline; }

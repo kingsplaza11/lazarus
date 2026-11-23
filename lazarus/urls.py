@@ -8,4 +8,5 @@ urlpatterns = [
     path("corpses/", include("intake.urls")),
     path("corpses/", include("autopsy.urls")),
     path("corpses/", include("specgen.urls")),
+    path("corpses/", include("parity.urls")),
 ]

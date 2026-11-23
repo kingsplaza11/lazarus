@@ -1,0 +1,39 @@
+{% extends "web/base.html" %}
+{% block title %}Lazarus · Resurrection check: {{ corpse.name }}{% endblock %}
+{% block content %}
+<section class="panel">
+  <a class="back" href="{% url 'intake:detail' corpse.pk %}">&larr; Back to {{ corpse.name }}</a>
+  <h1>Resurrection check: {{ corpse.name }}</h1>
+  <p class="meta">Checked {{ check.created_at|date:"M j, Y H:i" }} against <code>{{ check.target_url }}</code>{% if check.results.signed_in %} · signed in{% endif %}</p>
+  <div class="score-card {% if check.score >= 80 %}score-good{% elif check.score >= 50 %}score-mid{% else %}score-low{% endif %}">
+    <strong>{{ check.score }}%</strong>
+    <span>{{ check.results.summary }}</span>
+  </div>
+  <div class="vitals">
+    {% for cat in categories %}
+    <div><strong>{{ cat.passed }}/{{ cat.total }}</strong><span>{{ cat.label }} · {{ cat.percent }}%</span></div>
+    {% endfor %}
+  </div>
+  {% if check.results.notes %}
+  <ul class="muted">{% for note in check.results.notes %}<li>{{ note }}</li>{% endfor %}</ul>
+  {% endif %}
+</section>
+
+{% for cat in categories %}
+<section class="panel">
+  <h2>{{ cat.label }} <small class="muted">{{ cat.passed }}/{{ cat.total }}</small></h2>
+  <table class="data">
+    <thead><tr><th></th><th>Item</th><th>Result</th></tr></thead>
+    <tbody>
+      {% for item in cat.items %}
+      <tr>
+        <td>{% if item.score >= 0.999 %}<span class="ok">✓</span>{% elif item.score > 0 %}<span class="partial">~</span>{% else %}<span class="bad">✗</span>{% endif %}</td>
+        <td><code>{{ item.label }}</code></td>
+        <td>{{ item.detail }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</section>
+{% endfor %}
+{% endblock %}

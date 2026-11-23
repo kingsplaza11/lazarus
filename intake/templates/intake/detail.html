@@ -38,6 +38,9 @@
     {% if autopsy and autopsy.status == "done" %}
     <a class="btn" href="{% url 'autopsy:report' corpse.pk %}">View autopsy report</a>
     {% endif %}
+    {% if check %}
+    <a class="btn check-link" href="{% url 'parity:check' corpse.pk %}">Resurrection check: <strong>{{ check.score }}%</strong></a>
+    {% endif %}
   </div>
   {% else %}
   <button class="btn btn-primary" type="button" disabled>Begin autopsy</button>
