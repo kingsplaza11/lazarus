@@ -11,6 +11,17 @@
     · {{ corpse.created_at|date:"M j, Y" }}
   </p>
 
+  <ol class="tracker" aria-label="Resurrection progress">
+    <li class="{% if corpse.status == 'done' %}done{% else %}current{% endif %}"><span>1</span>Upload</li>
+    <li class="{% if autopsy and autopsy.status == 'done' %}done{% elif corpse.status == 'done' %}current{% endif %}">
+      <span>2</span>{% if autopsy and autopsy.status == 'done' %}<a href="{% url 'autopsy:report' corpse.pk %}">Autopsy</a>{% else %}Autopsy{% endif %}</li>
+    <li class="{% if spec %}done{% elif autopsy and autopsy.status == 'done' %}current{% endif %}">
+      <span>3</span>{% if spec %}<a href="{% url 'specgen:detail' corpse.pk %}">Spec</a>{% else %}Spec{% endif %}</li>
+    <li class="{% if check %}done{% elif spec %}current{% endif %}"><span>4</span>Resurrect in Kiro</li>
+    <li class="{% if check %}done{% endif %}">
+      <span>5</span>{% if check %}<a href="{% url 'parity:check' corpse.pk %}">Check · {{ check.score }}%</a>{% else %}Check{% endif %}</li>
+  </ol>
+
   {% if corpse.error %}
   <div class="alert alert-error"><p>{{ corpse.error }}</p></div>
   {% endif %}

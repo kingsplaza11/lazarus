@@ -14,6 +14,14 @@
   </div>
 </section>
 
+<section class="how" aria-label="How Lazarus works">
+  <ol class="steps">
+    {% for title, text in steps %}
+    <li><span class="step-n">{{ forloop.counter }}</span><strong>{{ title }}</strong><p>{{ text }}</p></li>
+    {% endfor %}
+  </ol>
+</section>
+
 {% if messages %}
 <ul class="messages">
   {% for message in messages %}<li class="message message-{{ message.tags }}">{{ message }}</li>{% endfor %}
@@ -27,6 +35,7 @@
     <h2>{{ corpse.name }}</h2>
     <p>{{ corpse.file_count }} file{{ corpse.file_count|pluralize }}</p>
     <p class="status">{{ corpse.get_status_display }}</p>
+    {% if corpse.resurrection_score is not None %}<p class="badge-score {% if corpse.resurrection_score >= 80 %}score-good{% elif corpse.resurrection_score >= 50 %}score-mid{% else %}score-low{% endif %}">Resurrected · {{ corpse.resurrection_score }}%</p>{% endif %}
     <time datetime="{{ corpse.created_at|date:'c' }}">{{ corpse.created_at|date:"M j, Y" }}</time>
   </a>
   {% empty %}
