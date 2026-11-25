@@ -4,7 +4,7 @@ import urllib.error
 import pytest
 
 from intake import github
-from intake.github import GitHubError, fetch_zip, parse_github_url, zipball_url
+from intake.github import GitHubError, archive_url, fetch_zip, parse_github_url, zipball_url
 
 
 @pytest.mark.parametrize("url,expected", [
@@ -65,3 +65,35 @@ def test_fetch_too_big(tmp_path, monkeypatch):
     monkeypatch.setattr(github, "MAX_UPLOAD_BYTES", 10)
     with pytest.raises(GitHubError, match="20 MB"):
         fetch_zip("https://github.com/o/r", tmp_path / "x.zip", opener=lambda req, timeout: FakeResponse(b"x" * 100))
+
+
+def test_archive_url():
+    assert archive_url("o", "r", None) == "https://github.com/o/r/archive/HEAD.zip"
+    assert archive_url("o", "r", "dev") == "https://github.com/o/r/archive/refs/heads/dev.zip"
+
+
+def test_fetch_tries_archive_first(tmp_path):
+    seen = []
+
+    def opener(req, timeout):
+        seen.append(req.full_url)
+        return FakeResponse(b"zipdata")
+
+    fetch_zip("https://github.com/o/r.git", tmp_path / "x.zip", opener=opener)
+    assert seen == ["https://github.com/o/r/archive/HEAD.zip"]
+
+
+def test_fetch_falls_back_to_api_with_token(tmp_path, monkeypatch):
+    import urllib.error
+    monkeypatch.setenv("GITHUB_TOKEN", "abc")
+    seen = []
+
+    def opener(req, timeout):
+        seen.append((req.full_url, req.get_header("Authorization")))
+        if "archive" in req.full_url:
+            raise urllib.error.HTTPError(req.full_url, 429, "Too Many Requests", {}, None)
+        return FakeResponse(b"zipdata")
+
+    fetch_zip("https://github.com/o/r", tmp_path / "x.zip", opener=opener)
+    assert seen[1] == ("https://api.github.com/repos/o/r/zipball", "Bearer abc")
+    assert (tmp_path / "x.zip").read_bytes() == b"zipdata"
