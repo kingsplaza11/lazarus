@@ -1,0 +1,214 @@
+{
+  "target_url": "http://127.0.0.1:8001",
+  "score": 100,
+  "results": {
+    "version": 1,
+    "target": "http://127.0.0.1:8001",
+    "signed_in": true,
+    "score": 100,
+    "summary": "16/16 pages \u00b7 1/1 forms \u00b7 9/9 tables \u00b7 4/4 safety checks",
+    "notes": [
+      "Signed in as admin via /login/.",
+      "install/mysql.copy.php:84 asks for database credentials (installer/import); not applicable to a rebuild that uses settings and migrations.",
+      "Compared against examples/taskfreak-resurrected/db.sqlite3.",
+      "Scanned 39 Python files in examples/taskfreak-resurrected."
+    ],
+    "categories": {
+      "pages": {
+        "score": 1.0,
+        "passed": 16,
+        "total": 16,
+        "items": [
+          {
+            "label": "error.php",
+            "score": 1.0,
+            "detail": "/error/: 200"
+          },
+          {
+            "label": "index.php",
+            "score": 1.0,
+            "detail": "/: 200"
+          },
+          {
+            "label": "install/index.php",
+            "score": 1.0,
+            "detail": "/install/: 403"
+          },
+          {
+            "label": "login.php",
+            "score": 1.0,
+            "detail": "/login/: 302 \u2192 200"
+          },
+          {
+            "label": "print_list.php",
+            "score": 1.0,
+            "detail": "/print/list/: 200"
+          },
+          {
+            "label": "project_edit.php",
+            "score": 1.0,
+            "detail": "/project/edit/: 200"
+          },
+          {
+            "label": "project_list.php",
+            "score": 1.0,
+            "detail": "/project/list/: 200"
+          },
+          {
+            "label": "public.php",
+            "score": 1.0,
+            "detail": "/public/: 302 \u2192 200"
+          },
+          {
+            "label": "rss.php",
+            "score": 1.0,
+            "detail": "/rss/: 302 \u2192 200"
+          },
+          {
+            "label": "user_details.php",
+            "score": 1.0,
+            "detail": "/user/details/: 200"
+          },
+          {
+            "label": "user_edit.php",
+            "score": 1.0,
+            "detail": "/user/edit/: 200"
+          },
+          {
+            "label": "user_list.php",
+            "score": 1.0,
+            "detail": "/user/list/: 200"
+          },
+          {
+            "label": "user_password.php",
+            "score": 1.0,
+            "detail": "/user/password/: 200"
+          },
+          {
+            "label": "user_register.php",
+            "score": 1.0,
+            "detail": "/user/register/: 302 \u2192 200"
+          },
+          {
+            "label": "xajax.task.php",
+            "score": 1.0,
+            "detail": "/task/: 200"
+          },
+          {
+            "label": "logout.php",
+            "score": 1.0,
+            "detail": "/logout/: 200"
+          }
+        ]
+      },
+      "forms": {
+        "score": 1.0,
+        "passed": 1,
+        "total": 1,
+        "items": [
+          {
+            "label": "login.php:69",
+            "score": 1.0,
+            "detail": "/login/: 1/1 fields"
+          }
+        ]
+      },
+      "tables": {
+        "score": 1.0,
+        "passed": 9,
+        "total": 9,
+        "items": [
+          {
+            "label": "frk_country",
+            "score": 1.0,
+            "detail": "2/2 columns"
+          },
+          {
+            "label": "frk_item",
+            "score": 1.0,
+            "detail": "13/13 columns"
+          },
+          {
+            "label": "frk_itemcomment",
+            "score": 1.0,
+            "detail": "6/6 columns"
+          },
+          {
+            "label": "frk_itemfile",
+            "score": 1.0,
+            "detail": "10/10 columns"
+          },
+          {
+            "label": "frk_itemstatus",
+            "score": 1.0,
+            "detail": "5/5 columns"
+          },
+          {
+            "label": "frk_member",
+            "score": 1.0,
+            "detail": "29/29 columns"
+          },
+          {
+            "label": "frk_memberproject",
+            "score": 1.0,
+            "detail": "3/3 columns"
+          },
+          {
+            "label": "frk_project",
+            "score": 1.0,
+            "detail": "3/3 columns"
+          },
+          {
+            "label": "frk_projectstatus",
+            "score": 1.0,
+            "detail": "5/5 columns"
+          }
+        ]
+      },
+      "safety": {
+        "score": 1.0,
+        "passed": 4,
+        "total": 4,
+        "items": [
+          {
+            "label": "No legacy PHP left",
+            "score": 1.0,
+            "detail": "no PHP files"
+          },
+          {
+            "label": "CSRF protection on",
+            "score": 1.0,
+            "detail": "middleware enabled"
+          },
+          {
+            "label": "Passwords hashed",
+            "score": 1.0,
+            "detail": "uses check_password, make_password, pbkdf2"
+          },
+          {
+            "label": "No raw SQL string-building",
+            "score": 1.0,
+            "detail": "none found"
+          }
+        ]
+      },
+      "look": {
+        "score": 1.0,
+        "passed": 2,
+        "total": 2,
+        "items": [
+          {
+            "label": "Pages load a stylesheet",
+            "score": 1.0,
+            "detail": "15/15 pages link a stylesheet"
+          },
+          {
+            "label": "Original stylesheet ported",
+            "score": 1.0,
+            "detail": "found skins/redfreak/css/freak.css, skins/bluefreak/css/freak.css, skins/bluefreak/css/calendar.css"
+          }
+        ]
+      }
+    }
+  }
+}
