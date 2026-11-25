@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block title %}{% if item %}{{ item.title }}{% else %}New task{% endif %} - TaskFreak!{% endblock %}
+{% block content %}
+<div id="task">
+{% if mode == "edit" %}{% include "core/_task_form.html" %}{% else %}{% include "core/_task_detail.html" %}{% endif %}
+</div>
+{% endblock %}

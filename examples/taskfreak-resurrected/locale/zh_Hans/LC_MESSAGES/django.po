@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: zh_Hans\n"
+
+msgid "Logout"
+msgstr "退出"
+
+msgid "Skin"
+msgstr "皮肤"
+
+msgid "Language"
+msgstr "语言"
+
+msgid "Tasks"
+msgstr "任务"
+
+msgid "Projects"
+msgstr "项目"
+
+msgid "Users"
+msgstr "用户"
+
+msgid "Password"
+msgstr "密码"
+
+msgid "Login"
+msgstr "登录"
+
+msgid "Username"
+msgstr "用户名"
+
+msgid "Remember me"
+msgstr "记住我"
+
+msgid "Forgot your password?"
+msgstr "忘记密码?"
+
+msgid "Register"
+msgstr "注册"
+

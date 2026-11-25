@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+<channel>
+<title>{{ project.name }}</title>
+<link>{{ link }}</link>
+<description>{{ project.description|default:project.name }}</description>
+{% for item in items %}<item>
+<title>{{ item.title }}</title>
+<link>{{ link }}</link>
+<description>{{ item.description }}</description>
+<guid isPermaLink="false">{{ project.pk }}-{{ item.pk }}</guid>
+</item>
+{% endfor %}</channel>
+</rss>

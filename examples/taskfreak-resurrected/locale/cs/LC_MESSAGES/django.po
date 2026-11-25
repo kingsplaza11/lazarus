@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: cs\n"
+
+msgid "Logout"
+msgstr "Odhlásit"
+
+msgid "Skin"
+msgstr "Vzhled"
+
+msgid "Language"
+msgstr "Jazyk"
+
+msgid "Tasks"
+msgstr "Úkoly"
+
+msgid "Projects"
+msgstr "Projekty"
+
+msgid "Users"
+msgstr "Uživatelé"
+
+msgid "Password"
+msgstr "Heslo"
+
+msgid "Login"
+msgstr "Přihlásit"
+
+msgid "Username"
+msgstr "Uživatelské jméno"
+
+msgid "Remember me"
+msgstr "Pamatovat si mě"
+
+msgid "Forgot your password?"
+msgstr "Zapomněli jste heslo?"
+
+msgid "Register"
+msgstr "Registrovat"
+

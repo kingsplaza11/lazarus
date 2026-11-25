@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Install - TaskFreak!{% endblock %}
+{% block content %}
+<h4>Install</h4>
+<p>Copy the data of an existing TaskFreak! MySQL database into this site.</p>
+{% if fail %}<p class="error">{{ fail }}</p>{% endif %}
+{% if result %}
+<div id="install-result">
+  <p><strong>{{ result.title }}</strong></p>
+  <ul>{% for table, n in result.counts.items %}<li>{{ table }}: {{ n }} rows</li>{% endfor %}</ul>
+</div>
+{% endif %}
+<form id="install-form" method="post" action="{% url 'install' %}" autocomplete="off">{% csrf_token %}
+  <p><label for="id_src_host">Host</label><br>
+    <input type="text" name="src_host" id="id_src_host" value="{{ values.src_host|default:'localhost' }}" maxlength="255">
+    {% if errors.src_host %}<span class="error">{{ errors.src_host }}</span>{% endif %}</p>
+  <p><label for="id_src_port">Port</label><br>
+    <input type="text" name="src_port" id="id_src_port" value="{{ values.src_port|default:'3306' }}" maxlength="5">
+    {% if errors.src_port %}<span class="error">{{ errors.src_port }}</span>{% endif %}</p>
+  <p><label for="id_src_user">User</label><br>
+    <input type="text" name="src_user" id="id_src_user" value="{{ values.src_user }}" maxlength="80">
+    {% if errors.src_user %}<span class="error">{{ errors.src_user }}</span>{% endif %}</p>
+  <p><label for="id_src_pass">Password</label><br>
+    <input type="password" name="src_pass" id="id_src_pass" value="" autocomplete="new-password"></p>
+  <p><label for="id_src_base">Database</label><br>
+    <input type="text" name="src_base" id="id_src_base" value="{{ values.src_base }}" maxlength="64">
+    {% if errors.src_base %}<span class="error">{{ errors.src_base }}</span>{% endif %}</p>
+  <p><label for="id_src_table">Table</label><br>
+    <select name="src_table" id="id_src_table">
+      <option value="all"{% if values.src_table == "all" or not values.src_table %} selected{% endif %}>All tables</option>
+      {% for t in tables %}<option value="{{ t }}"{% if values.src_table == t %} selected{% endif %}>{{ t }}</option>{% endfor %}
+    </select>
+    {% if errors.src_table %}<span class="error">{{ errors.src_table }}</span>{% endif %}</p>
+  {% if errors.action %}<p class="error">{{ errors.action }}</p>{% endif %}
+  <p><button type="submit" name="action" value="test">Test connection</button>
+     <button type="submit" name="action" value="copy">Copy data</button></p>
+</form>
+{% endblock %}

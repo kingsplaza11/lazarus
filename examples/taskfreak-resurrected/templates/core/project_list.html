@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %}Projects - TaskFreak!{% endblock %}
+{% block content %}
+<h4>Projects</h4>
+<form id="project-filter" method="post" action="/project/list/">{% csrf_token %}
+  <input type="hidden" name="sProject" value="{{ sProject|default_if_none:'' }}">
+  <input type="hidden" name="id" value="{{ item_id|default_if_none:'' }}">
+  <input type="hidden" name="mode" value="{{ mode }}">
+  <input type="hidden" name="sort" value="{{ sort }}">
+  <input type="hidden" name="dir" value="{{ dir }}">
+  <input type="hidden" name="show" value="{{ show }}">
+  <input type="hidden" name="xajax" value="{{ carried.xajax }}">
+  <input type="hidden" name="xajaxargs" value="{{ carried.xajaxargs }}">
+</form>
+{% if rows %}
+<table id="project-list">
+  <thead><tr><th>Project</th><th>Status</th><th></th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr><td>{{ r.project.name }}</td><td>{{ r.status }}</td><td><a href="/project/edit/?id={{ r.project.pk }}">Edit</a></td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p>You have no projects yet.</p>
+{% endif %}
+<p><a href="/project/edit/">New project</a></p>
+{% endblock %}

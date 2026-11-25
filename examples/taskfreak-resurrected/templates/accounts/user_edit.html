@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Edit user - TaskFreak!{% endblock %}
+{% block content %}
+<h4>Edit user: {{ member.username }}</h4>
+{% if errors %}<ul class="errors">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+<form id="edit-form" method="post" action="/user/edit/">
+  {% csrf_token %}
+  <input type="hidden" name="id" value="{{ member.pk }}">
+  <input type="hidden" name="xajax" value="{{ xajax }}">
+  <input type="hidden" name="xajaxargs" value="{{ xajaxargs }}">
+  <table>
+    <tr><th>Username</th><td>{{ member.username }}</td></tr>
+    <tr><th><label for="email">Email</label></th><td><input id="email" name="email" maxlength="120" value="{{ values.email }}"></td></tr>
+    <tr><th><label for="title">Title</label></th><td><input id="title" name="title" maxlength="20" value="{{ values.title }}"></td></tr>
+    <tr><th><label for="firstname">First name</label></th><td><input id="firstname" name="firstname" maxlength="50" value="{{ values.firstname }}"></td></tr>
+    <tr><th><label for="middlename">Middle name</label></th><td><input id="middlename" name="middlename" maxlength="50" value="{{ values.middlename }}"></td></tr>
+    <tr><th><label for="lastname">Last name</label></th><td><input id="lastname" name="lastname" maxlength="50" value="{{ values.lastname }}"></td></tr>
+    <tr><th><label for="zipcode">Zip code</label></th><td><input id="zipcode" name="zipcode" maxlength="20" value="{{ values.zipcode }}"></td></tr>
+    <tr><th><label for="city">City</label></th><td><input id="city" name="city" maxlength="60" value="{{ values.city }}"></td></tr>
+    <tr><th><label for="statecode">State</label></th><td><input id="statecode" name="statecode" maxlength="2" value="{{ values.statecode }}"></td></tr>
+    <tr><th><label for="country">Country</label></th><td>
+      <select id="country" name="country">{% for c in countries %}<option value="{{ c.countryid }}"{% if c.countryid == values.country %} selected{% endif %}>{{ c.name|default:c.countryid }}</option>{% endfor %}</select>
+    </td></tr>
+    <tr><th><label for="phone">Phone</label></th><td><input id="phone" name="phone" maxlength="30" value="{{ values.phone }}"></td></tr>
+    <tr><th><label for="mobile">Mobile</label></th><td><input id="mobile" name="mobile" maxlength="30" value="{{ values.mobile }}"></td></tr>
+    <tr><th><label for="fax">Fax</label></th><td><input id="fax" name="fax" maxlength="30" value="{{ values.fax }}"></td></tr>
+    <tr><th><label for="password1">New password</label></th><td><input id="password1" type="password" name="password1" autocomplete="new-password"></td></tr>
+    <tr><th><label for="password2">Confirm password</label></th><td><input id="password2" type="password" name="password2" autocomplete="new-password"></td></tr>
+    {% if can_admin_fields %}
+    <tr><th><label for="enabled">Enabled</label></th><td><input id="enabled" type="checkbox" name="enabled" value="1"{% if values.enabled %} checked{% endif %}></td></tr>
+    <tr><th><label for="level">Level (0-{{ admin_level }})</label></th><td><input id="level" name="level" value="{{ values.level }}"></td></tr>
+    {% endif %}
+  </table>
+  <input type="submit" name="submit" value="Save">
+</form>
+<p><a href="/user/details/?id={{ member.pk }}">Cancel</a></p>
+{% endblock %}

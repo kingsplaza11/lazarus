@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: es\n"
+
+msgid "Logout"
+msgstr "Salir"
+
+msgid "Skin"
+msgstr "Tema"
+
+msgid "Language"
+msgstr "Idioma"
+
+msgid "Tasks"
+msgstr "Tareas"
+
+msgid "Projects"
+msgstr "Proyectos"
+
+msgid "Users"
+msgstr "Usuarios"
+
+msgid "Password"
+msgstr "Contraseña"
+
+msgid "Login"
+msgstr "Acceder"
+
+msgid "Username"
+msgstr "Usuario"
+
+msgid "Remember me"
+msgstr "Recordarme"
+
+msgid "Forgot your password?"
+msgstr "¿Olvidó su contraseña?"
+
+msgid "Register"
+msgstr "Registrarse"
+

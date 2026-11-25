@@ -1,0 +1,58 @@
+{% load static i18n %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}TaskFreak!{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'skins/'|add:skin|add:'/css/freak.css' %}">
+  <script src="{% static 'js/htmx.min.js' %}" defer></script>
+</head>
+<body hx-headers='{"X-CSRFToken": "{{ csrf_token }}"}'>
+  <div id="header">
+    <div id="header1">
+      {% if member %}
+      <div id="user">
+        <span id="username">{% if member.firstname or member.lastname %}{{ member.firstname }} {{ member.lastname }}{% else %}{{ member.username }}{% endif %}</span>
+        <form id="logout-form" method="post" action="/logout/">{% csrf_token %}
+          <button type="submit">{% trans "Logout" %}</button>
+        </form>
+      </div>
+      {% endif %}
+      <a href="/"><img src="{% static 'skins/'|add:skin|add:'/images/logo.png' %}" alt="TaskFreak!" id="logo"></a>
+    </div>
+    <div id="header2">
+      <form id="rightmenu" method="post" action="{% url 'set_skin' %}">{% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <select name="skin" aria-label="{% trans "Skin" %}" onchange="this.form.submit()">
+          {% for s in skins %}<option value="{{ s }}"{% if s == skin %} selected{% endif %}>{{ s }}</option>{% endfor %}
+        </select>
+        <noscript><button type="submit">OK</button></noscript>
+      </form>
+      <form id="language-form" method="post" action="{% url 'set_language' %}">{% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <select name="language" aria-label="{% trans "Language" %}" onchange="this.form.submit()">
+          {% get_available_languages as LANGS %}
+          {% for code, name in LANGS %}{% get_language_info for code as li %}<option value="{{ code }}"{% if code == LANGUAGE_CODE %} selected{% endif %}>{{ li.name_local }}</option>{% endfor %}
+        </select>
+        <noscript><button type="submit">OK</button></noscript>
+      </form>
+      {% if member %}
+      <nav id="menu">
+        <ul>
+          <li><a href="/">{% trans "Tasks" %}</a></li>
+          <li><a href="/project/list/">{% trans "Projects" %}</a></li>
+          <li><a href="/user/list/">{% trans "Users" %}</a></li>
+          <li><a href="/user/password/">{% trans "Password" %}</a></li>
+        </ul>
+      </nav>
+      {% endif %}
+    </div>
+  </div>
+  <div id="container">
+    <div id="content">
+      {% if messages %}{% for message in messages %}<p class="message">{{ message }}</p>{% endfor %}{% endif %}
+      {% block content %}{% endblock %}
+    </div>
+  </div>
+</body>
+</html>

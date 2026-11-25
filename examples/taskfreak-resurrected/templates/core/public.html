@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block title %}{{ project.name }} - TaskFreak!{% endblock %}
+{% block content %}
+<h4>{{ project.name }}</h4>
+{% if project.description %}<p>{{ project.description }}</p>{% endif %}
+{% if items %}
+<table class="sheet">
+  <thead><tr><th>Priority</th><th>Task</th><th>Deadline</th></tr></thead>
+  <tbody>
+  {% for item in items %}
+    <tr id="item-{{ item.pk }}"><td>{{ item.priority }}</td><td>{{ item.title }}</td><td>{{ item.deadlinedate|date:"Y-m-d" }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No tasks.</p>
+{% endif %}
+{% endblock %}

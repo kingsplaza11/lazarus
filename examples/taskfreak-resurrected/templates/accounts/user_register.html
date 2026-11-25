@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Register - TaskFreak!{% endblock %}
+{% block content %}
+<h4>Register</h4>
+{% if activated %}
+<p id="register-activated">Your account is now active.</p>
+<p><a href="{% url 'login' %}">Login</a></p>
+{% elif done %}
+<p id="register-done">Your account has been created. Check your email for an activation link.</p>
+<p><a href="{% url 'login' %}">Back to login</a></p>
+{% else %}
+{% if errors %}<ul class="error">{% for e in errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+<form id="register-form" method="post" action="{% url 'user_register' %}">{% csrf_token %}
+  {% for name, value in carried.items %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+  <p><label for="id_username">Username</label><br>
+    <input type="text" name="username" id="id_username" value="{{ values.username }}" maxlength="20" autofocus></p>
+  <p><label for="id_email">Email</label><br>
+    <input type="text" name="email" id="id_email" value="{{ values.email }}" maxlength="120"></p>
+  <p><label for="id_firstname">First name</label><br>
+    <input type="text" name="firstname" id="id_firstname" value="{{ values.firstname }}" maxlength="50"></p>
+  <p><label for="id_lastname">Last name</label><br>
+    <input type="text" name="lastname" id="id_lastname" value="{{ values.lastname }}" maxlength="50"></p>
+  {% if countries %}
+  <p><label for="id_country">Country</label><br>
+    <select name="country" id="id_country">
+      <option value="">-</option>
+      {% for c in countries %}<option value="{{ c.countryid }}"{% if c.countryid == values.country %} selected{% endif %}>{{ c.name }}</option>{% endfor %}
+    </select></p>
+  {% endif %}
+  <p><label for="id_password1">Password</label><br>
+    <input type="password" name="password1" id="id_password1" autocomplete="new-password"></p>
+  <p><label for="id_password2">Confirm password</label><br>
+    <input type="password" name="password2" id="id_password2" autocomplete="new-password"></p>
+  <p><button type="submit" name="submit" value="1">Register</button></p>
+</form>
+{% endif %}
+{% endblock %}

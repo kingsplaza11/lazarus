@@ -1,0 +1,17 @@
+<h4>{% if item %}Edit task{% else %}New task{% endif %}</h4>
+<form id="task-form" method="post" action="/task/" hx-post="/task/" hx-target="#task" hx-swap="innerHTML">{% csrf_token %}
+  <input type="hidden" name="action" value="save">
+  <input type="hidden" name="id" value="{{ item.pk|default_if_none:'' }}">
+  <input type="hidden" name="xajax" value="{{ carried.xajax }}">
+  <input type="hidden" name="xajaxargs" value="{{ carried.xajaxargs }}">
+  {{ form.non_field_errors }}
+  <p><label for="{{ form.title.id_for_label }}">Title</label><br>{{ form.title.errors }}{{ form.title }}</p>
+  <p><label for="{{ form.description.id_for_label }}">Description</label><br>{{ form.description.errors }}{{ form.description }}</p>
+  <p><label for="{{ form.priority.id_for_label }}">Priority</label><br>{{ form.priority.errors }}{{ form.priority }}</p>
+  <p><label for="{{ form.deadlinedate.id_for_label }}">Deadline</label><br>{{ form.deadlinedate.errors }}{{ form.deadlinedate }}</p>
+  <p><label for="{{ form.project.id_for_label }}">Project</label><br>{{ form.project.errors }}{{ form.project }}</p>
+  <p><label for="{{ form.member.id_for_label }}">Assignee</label><br>{{ form.member.errors }}{{ form.member }}</p>
+  <p>{{ form.showprivate }} <label for="{{ form.showprivate.id_for_label }}">Private</label></p>
+  <p><button type="submit">Save</button>
+    {% if item %}<a href="/task/?id={{ item.pk }}" hx-get="/task/?id={{ item.pk }}" hx-target="#task">Cancel</a>{% else %}<a href="/">Cancel</a>{% endif %}</p>
+</form>

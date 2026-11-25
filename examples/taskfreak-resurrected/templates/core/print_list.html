@@ -1,0 +1,35 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{% static 'skins/'|add:skin|add:'/css/freak.css' %}">
+<link rel="stylesheet" href="{% static 'skins/'|add:skin|add:'/css/print.css' %}" media="print">
+<title>Print list{% if selected_project %} - {{ selected_project.name }}{% endif %}</title>
+<style>
+  body { font-family: Arial, Helvetica, sans-serif; font-size: 12pt; color: #000; background: #fff; margin: 1em; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { border: 1px solid #000; padding: 4px 6px; text-align: left; }
+  th { background: #eee; }
+  @media print { .noprint { display: none; } }
+</style>
+</head>
+<body>
+<h1>{% if selected_project %}{{ selected_project.name }}{% else %}All projects{% endif %}</h1>
+<p>{{ member.firstname }} {{ member.lastname }} &middot; show: {{ show }} &middot; sorted by {{ sort }} ({{ dir }})</p>
+<form class="noprint" method="post" action="/print/list/">
+  {% csrf_token %}
+  <input type="hidden" name="sProject" value="{{ sProject|default_if_none:'' }}">
+  <input type="hidden" name="id" value="{{ item_id|default_if_none:'' }}">
+  <input type="hidden" name="mode" value="{{ mode }}">
+  <input type="hidden" name="sort" value="{{ sort }}">
+  <input type="hidden" name="dir" value="{{ dir }}">
+  <input type="hidden" name="show" value="{{ show }}">
+  <input type="hidden" name="xajax" value="{{ xajax }}">
+  <input type="hidden" name="xajaxargs" value="{{ xajaxargs }}">
+  <button type="button" onclick="window.print()">Print</button>
+  <a href="/">Back to list</a>
+</form>
+{% include "core/_task_list.html" %}
+</body>
+</html>

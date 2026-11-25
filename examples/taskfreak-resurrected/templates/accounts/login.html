@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% load i18n %}
+{% block title %}{% trans "Login" %} - TaskFreak!{% endblock %}
+{% block content %}
+<h4>{% trans "Login" %}</h4>
+<form id="login-form" method="post" action="{% url 'login' %}">{% csrf_token %}
+  {% for name, value in carried.items %}<input type="hidden" name="{{ name }}" value="{{ value }}">{% endfor %}
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
+  <p><label for="id_username">{% trans "Username" %}</label><br>
+    <input type="text" name="username" id="id_username" value="{{ username }}" maxlength="20" autocomplete="username" autofocus></p>
+  <p><label for="id_password">{% trans "Password" %}</label><br>
+    <input type="password" name="password" id="id_password" autocomplete="current-password"></p>
+  <p><label><input type="checkbox" name="remember" value="1"{% if remember %} checked{% endif %}> {% trans "Remember me" %}</label></p>
+  <p><button type="submit">{% trans "Login" %}</button></p>
+  <p><a href="/user/password/">{% trans "Forgot your password?" %}</a> &middot; <a href="/user/register/">{% trans "Register" %}</a></p>
+</form>
+{% endblock %}

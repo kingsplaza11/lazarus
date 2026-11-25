@@ -1,0 +1,18 @@
+{% if items %}
+<table class="sheet">
+  <thead><tr><th>Project</th><th>Priority</th><th>Task</th><th>Deadline</th><th>Assigned to</th></tr></thead>
+  <tbody>
+  {% for item in items %}
+    <tr id="item-{{ item.pk }}"{% if item.pk == item_id %} class="selected"{% endif %}>
+      <td>{{ item.project.name }}</td>
+      <td>{{ item.priority }}</td>
+      <td>{{ item.title }}</td>
+      <td>{{ item.deadlinedate|date:"Y-m-d" }}</td>
+      <td>{{ item.member.firstname }} {{ item.member.lastname }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<p class="empty">No tasks.</p>
+{% endif %}

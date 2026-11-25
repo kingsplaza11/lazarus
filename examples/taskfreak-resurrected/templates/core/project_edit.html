@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}{% if project %}Edit project{% else %}New project{% endif %} - TaskFreak!{% endblock %}
+{% block content %}
+<h4>{% if project %}Edit project{% else %}New project{% endif %}</h4>
+{% if saved %}<p id="project-saved">Project saved.</p>{% endif %}
+<form id="project-form" method="post" action="/project/edit/">{% csrf_token %}
+  <input type="hidden" name="id" value="{{ project.pk|default_if_none:'' }}">
+  <input type="hidden" name="xajax" value="{{ carried.xajax }}">
+  <input type="hidden" name="xajaxargs" value="{{ carried.xajaxargs }}">
+  {{ form.non_field_errors }}
+  <p><label for="{{ form.name.id_for_label }}">Name</label><br>{{ form.name.errors }}{{ form.name }}</p>
+  <p><label for="{{ form.description.id_for_label }}">Description</label><br>{{ form.description.errors }}{{ form.description }}</p>
+  <p><label for="{{ form.status.id_for_label }}">Status</label><br>{{ form.status.errors }}{{ form.status }}</p>
+  <p><button type="submit" name="submit" value="1">Save</button></p>
+</form>
+{% if project %}
+<p id="public-link">Public read-only link: <a href="{{ public_url }}">{{ public_url }}</a></p>
+<h4>Members</h4>
+<ul id="project-members">{% for mp in members %}<li>{{ mp.member.username }}</li>{% endfor %}</ul>
+{% if invite_error %}<p class="error">{{ invite_error }}</p>{% endif %}
+{% if invite_ok %}<p id="invite-ok">{{ invite_ok }}</p>{% endif %}
+<form id="invite-form" method="post" action="/project/edit/">{% csrf_token %}
+  <input type="hidden" name="id" value="{{ project.pk }}">
+  <input type="hidden" name="xajax" value="{{ carried.xajax }}">
+  <input type="hidden" name="xajaxargs" value="{{ carried.xajaxargs }}">
+  <p><label for="id_invitee">Username or email</label><br>
+    <input type="text" name="invitee" id="id_invitee" maxlength="120"></p>
+  <p><button type="submit" name="invite" value="1">Invite</button></p>
+</form>
+{% endif %}
+{% endblock %}

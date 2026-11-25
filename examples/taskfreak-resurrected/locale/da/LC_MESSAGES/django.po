@@ -1,0 +1,41 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Language: da\n"
+
+msgid "Logout"
+msgstr "Log ud"
+
+msgid "Skin"
+msgstr "Tema"
+
+msgid "Language"
+msgstr "Sprog"
+
+msgid "Tasks"
+msgstr "Opgaver"
+
+msgid "Projects"
+msgstr "Projekter"
+
+msgid "Users"
+msgstr "Brugere"
+
+msgid "Password"
+msgstr "Adgangskode"
+
+msgid "Login"
+msgstr "Log ind"
+
+msgid "Username"
+msgstr "Brugernavn"
+
+msgid "Remember me"
+msgstr "Husk mig"
+
+msgid "Forgot your password?"
+msgstr "Glemt din adgangskode?"
+
+msgid "Register"
+msgstr "Opret konto"
+

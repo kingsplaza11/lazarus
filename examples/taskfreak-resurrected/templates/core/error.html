@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}Error - TaskFreak!{% endblock %}
+{% block content %}
+<div id="error">
+  <h4>Error</h4>
+  <p class="error">{% if message %}{{ message }}{% else %}An error occurred.{% endif %}</p>
+  <p><a href="/">Back to home</a></p>
+</div>
+{% endblock %}

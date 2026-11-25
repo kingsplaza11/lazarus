@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Users - TaskFreak!{% endblock %}
+{% block content %}
+<h4>Users</h4>
+<form id="user-filter" method="post" action="/user/list/">{% csrf_token %}
+  <input type="hidden" name="sProject" value="{{ header.sProject }}">
+  <input type="hidden" name="id" value="{{ header.id }}">
+  <input type="hidden" name="mode" value="{{ header.mode }}">
+  <input type="hidden" name="sort" value="{{ header.sort }}">
+  <input type="hidden" name="dir" value="{{ header.dir }}">
+  <input type="hidden" name="show" value="{{ header.show }}">
+  <input type="hidden" name="xajax" value="{{ xajax }}">
+  <input type="hidden" name="xajaxargs" value="{{ xajaxargs }}">
+</form>
+<table id="user-list">
+  <thead><tr><th>Username</th><th>Name</th><th>Email</th></tr></thead>
+  <tbody>
+  {% for m in members %}
+    <tr>
+      <td><a href="/user/details/?id={{ m.pk }}">{{ m.username }}</a></td>
+      <td>{{ m.title }} {{ m.firstname }} {{ m.middlename }} {{ m.lastname }}</td>
+      <td>{{ m.email }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

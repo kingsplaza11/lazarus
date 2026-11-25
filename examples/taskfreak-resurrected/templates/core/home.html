@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}TaskFreak!{% endblock %}
+{% block content %}
+<form id="taskfilter" method="get" action="/" hx-get="/" hx-target="#tasklist" hx-trigger="change" hx-push-url="true">
+  <input type="hidden" name="id" value="{{ item_id|default_if_none:'' }}">
+  <input type="hidden" name="mode" value="{{ mode }}">
+  <label>Project
+    <select name="sProject">
+      <option value="">All</option>
+      {% for mp in projects %}<option value="{{ mp.project.pk }}"{% if mp.project.pk == sProject %} selected{% endif %}>{{ mp.project.name }}</option>{% endfor %}
+    </select>
+  </label>
+  <label>Sort
+    <select name="sort">{% for s in sorts %}<option value="{{ s }}"{% if s == sort %} selected{% endif %}>{{ s }}</option>{% endfor %}</select>
+  </label>
+  <label>Order
+    <select name="dir"><option value="asc"{% if dir == "asc" %} selected{% endif %}>asc</option><option value="desc"{% if dir == "desc" %} selected{% endif %}>desc</option></select>
+  </label>
+  <label>Show
+    <select name="show">{% for s in shows %}<option value="{{ s }}"{% if s == show %} selected{% endif %}>{{ s }}</option>{% endfor %}</select>
+  </label>
+  <noscript><button type="submit">OK</button></noscript>
+</form>
+<div id="tasklist">{% include "core/_task_list.html" %}</div>
+{% endblock %}
